@@ -16,3 +16,4 @@ review-code
 bug-fix
 change-request
 feedback
+manual-test-run
