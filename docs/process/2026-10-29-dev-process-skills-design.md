@@ -17,11 +17,12 @@
   - style UI, component dùng chung, mockup màn hình.
 - Tài liệu của từng giai đoạn nằm ở `docs/phases/phase-N/`.
 - Manual test bao gồm mọi thứ con người làm được bằng tay qua trình duyệt, DB, cookie, Facebook và thiết bị. Test case được thiết kế bài bản (bảng khía cạnh test + kỹ thuật thiết kế test), có evidence. Báo cáo quản lý bằng Markdown, xuất ra Excel và PDF (qua mẫu HTML).
-- **Đợt 1** gồm 19 skill và 1 command:
+- Mọi phản hồi trong lúc test (bug, điểm chưa hợp lý, câu hỏi) đi qua một cửa chung là `/feedback`. Skill này phân loại rồi chuyển sang skill phù hợp, và ghi vào sổ `issues.md`.
+- **Đợt 1** gồm 20 skill và 1 command:
   - **Khởi tạo:** `conventions-init`, `ui-style-init`, `ui-style-update`, `test-viewpoints-init`.
   - **Thiết kế:** `phase-kickoff`, `detailed-design`, `ui-design`, `component-design`, `test-case-design`, `design-review`, `decision-log`.
   - **Code:** `implementation-plan`, `implement-task`, `tdd`, `code-review`, `bug-fix`, `change-request`.
-  - **Test và nghiệm thu:** `manual-test-run`, `acceptance-report`.
+  - **Test và nghiệm thu:** `manual-test-run`, `feedback`, `acceptance-report`.
   - **Command:** `/phase-status`.
 - **Đợt sau:** fixture thật, eval AI, deploy, sửa lỗi khi Facebook đổi giao diện, đổi prompt/model, bật tính năng theo nấc, diễn tập khôi phục sao lưu.
 
@@ -36,7 +37,7 @@
 - Claude Code tự biết bước tiếp theo, người dùng không phải nhớ quy trình.
 
 ### Trong phạm vi (đợt 1)
-- 19 skill và command `/phase-status` liệt kê ở mục 5.
+- 20 skill và command `/phase-status` liệt kê ở mục 5.
 - `CLAUDE.md` chứa các quy tắc chung (mục 2).
 - Mẫu tài liệu và checklist cho từng skill.
 - Script xuất báo cáo Excel/PDF.
@@ -61,6 +62,7 @@
   - Test case: `P<giai đoạn>-<mã tính năng 3 chữ>-<số 3 chữ số>`, ví dụ `P0-GRP-012`. Mã 3 chữ do `detailed-design` đặt và ghi trong `status.md`.
   - Task code: `T<số 2 chữ số>` trong phạm vi giai đoạn, ví dụ `T06`.
   - Quyết định: `NNNN-<slug>`, ví dụ `0003-https-via-caddy`.
+  - Vấn đề trong sổ theo dõi: `P<giai đoạn>-ISS-<số 3 chữ số>`, ví dụ `P0-ISS-007`.
   - Lần chạy test: `<YYYY-MM-DD>-<số thứ tự>`, ví dụ `2026-11-10-01`.
 - **Ghi quyết định:** xem quy tắc ở skill `decision-log` (mục 5.2).
 - **Dữ liệu thật:** evidence và báo cáo xuất ra (`.xlsx`, `.pdf`) không bao giờ được commit (mục 8.6).
@@ -178,6 +180,7 @@ Nhóm khởi tạo chạy **một lần** trước giai đoạn 0, theo thứ t�
 - **Điểm dừng:** chủ tiệm ký nghiệm thu.
 
 ### 3.2 Nhánh phụ
+- **Phản hồi trong lúc test** (bug, điểm chưa hợp lý, câu hỏi): `/feedback "<nội dung>"` → phân loại → chuyển sang `/bug-fix`, `/change-request`, bổ sung test case, hoặc trả lời luôn.
 - **Case không đạt:** `/bug-fix P0-GRP-012` → `/manual-test-run --retest P0-GRP-012`.
 - **Yêu cầu thay đổi:** `/change-request "<nội dung>"`.
 - **Ghi quyết định:** `/decision-log "<tiêu đề>"` (cũng được các skill thiết kế tự gọi).
@@ -216,6 +219,7 @@ docs/
     │   ├── <tính năng>.md
     │   └── reviews/<tính năng>-review.md
     ├── plan.md
+    ├── issues.md                  # sổ theo dõi vấn đề (feedback, case không đạt)
     ├── test/
     │   ├── cases/<tính năng>.md
     │   ├── traceability.md
@@ -437,25 +441,43 @@ Mỗi skill được mô tả theo: mục đích, lệnh gọi, điều kiện t
   3. Với từng case:
      - case Claude làm được (trình duyệt qua Playwright, DB qua lệnh SQL, cookie): tự chạy và tự chụp ảnh;
      - case cần người (thiết bị thật, Facebook thật, đánh giá bằng mắt): hướng dẫn từng bước, nhận ảnh và kết quả từ người dùng;
-     - ghi đạt / không đạt / bị chặn / bỏ qua kèm lý do.
-  4. Với test lại: giữ nguyên kết quả và evidence lần trước, ghi lần mới cạnh đó.
-- **Output:** `results.md` (mục 8.6), `evidence/`.
-- **Gọi:** `bug-fix` (đề xuất, khi có case không đạt).
+     - ghi đạt / không đạt / bị chặn / bỏ qua kèm lý do;
+     - case không đạt tự tạo một mục trong `issues.md`.
+  4. Với test lại: giữ nguyên kết quả và evidence lần trước, ghi lần mới cạnh đó; cập nhật mục tương ứng trong `issues.md`.
+  5. Người dùng có phản hồi giữa chừng thì chuyển qua `feedback`.
+- **Output:** `results.md` (mục 8.6), `evidence/`, cập nhật `issues.md`.
+- **Gọi:** `feedback`, `bug-fix` (đề xuất, khi có case không đạt).
+
+#### `feedback`
+- **Mục đích:** cửa vào chung cho mọi phản hồi trong lúc test: bug, điểm chưa hợp lý, câu hỏi.
+- **Lệnh:** `/feedback "<nội dung>"`, hoặc được `manual-test-run` gọi.
+- **Input:**
+  - nội dung phản hồi, ảnh chụp nếu có;
+  - tính năng liên quan: tự đoán từ `status.md` và nội dung, đoán không ra thì hỏi;
+  - thiết kế chi tiết, mockup, test case của tính năng: để đối chiếu.
+- **Phân loại:**
+  - **bug:** app chạy khác thiết kế → `bug-fix`;
+  - **thiết kế chưa hợp lý:** app chạy đúng thiết kế nhưng thiết kế chưa tốt → `change-request`;
+  - **thiếu test case:** tình huống chưa có case → bổ sung case vào file test case và `traceability.md`;
+  - **câu hỏi hoặc hiểu nhầm:** trả lời, dẫn chứng từ thiết kế.
+- **Điểm dừng:** trình bày cách phân loại và hướng xử lý, chờ người dùng xác nhận rồi mới chuyển skill.
+- **Output:** mục mới trong `phase-N/issues.md`: mã, ngày, nội dung, phân loại, tính năng, tên file evidence, trạng thái (mở / đang xử lý / đã xong / không sửa kèm lý do), liên kết tới cách xử lý (commit, phiên bản thiết kế, case mới).
+- **Gọi:** `bug-fix`, `change-request`.
 
 #### `acceptance-report`
 - **Mục đích:** nghiệm thu giai đoạn.
 - **Lệnh:** `/acceptance-report <N>`
 - **Điều kiện tiên quyết:** mọi tính năng ở trạng thái "đạt", hoặc người dùng chấp nhận lỗi còn mở.
-- **Input:** như mục 3.1 bước 10.
+- **Input:** như mục 3.1 bước 10, cộng `issues.md`.
 - **Output:**
-  - `acceptance/report.md`: tổng quan, đối chiếu từng tiêu chí "Xong khi", thống kê case, lỗi còn mở, số liệu chạy thật, phần ký nghiệm thu;
+  - `acceptance/report.md`: tổng quan, đối chiếu từng tiêu chí "Xong khi", thống kê case, vấn đề còn mở (từ `issues.md`), số liệu chạy thật, phần ký nghiệm thu;
   - `report.xlsx`: sheet "Tổng hợp", sheet "Danh sách case", mỗi case có evidence một sheet và ảnh được nhúng;
   - `report.pdf`: render `report.md` qua mẫu HTML (`templates/report.html`) rồi in PDF bằng Playwright, ảnh evidence nhúng theo từng case.
 - **Điểm dừng:** chủ tiệm ký nghiệm thu; `status.md` ghi ngày nghiệm thu.
 
 ### 5.5 Command `/phase-status`
-- **Input:** `status.md`, `plan.md`, `test/runs/` của giai đoạn hiện tại.
-- **Output** (chỉ in ra, không ghi file): số tính năng theo từng bước, số task xong, số case đạt / không đạt / chưa chạy, vấn đề đang chặn, lệnh nên chạy tiếp.
+- **Input:** `status.md`, `plan.md`, `test/runs/`, `issues.md` của giai đoạn hiện tại.
+- **Output** (chỉ in ra, không ghi file): số tính năng theo từng bước, số task xong, số case đạt / không đạt / chưa chạy, số vấn đề đang mở, vấn đề đang chặn, lệnh nên chạy tiếp.
 
 ---
 
