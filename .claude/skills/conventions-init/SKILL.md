@@ -8,7 +8,7 @@ argument-hint: ""
 
 ## Mục đích
 
-Chốt các quy ước mà mọi skill code về sau (`implement-task`, `tdd`, `code-review`) phải tuân theo, và ghi vào mục `## Quy ước` của `CLAUDE.md`.
+Chốt các quy ước mà mọi skill code về sau (`implement-task`, `tdd`, `review-code`) phải tuân theo, và ghi vào mục `## Quy ước` của `CLAUDE.md`.
 
 ## Điều kiện tiên quyết
 

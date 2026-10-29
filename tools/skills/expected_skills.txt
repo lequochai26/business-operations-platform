@@ -13,3 +13,6 @@ implementation-plan
 implement-task
 tdd
 review-code
+bug-fix
+change-request
+feedback

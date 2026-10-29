@@ -21,7 +21,7 @@ Chốt ngày 2026-11-01. ADR liên quan: 0001-monorepo-pnpm, 0002-vitest-testcon
 
 - Tên nhánh: `phase-<N>/t<nn>-<slug>`, ví dụ `phase-0/t06-groups-api`.
 - Commit message: Conventional Commits, phần mô tả tiếng Anh.
-- Merge: squash merge vào `main` sau khi `/code-review` xong.
+- Merge: squash merge vào `main` sau khi `/review-code` xong.
 
 ### Lint, format, typecheck
 

@@ -1,6 +1,6 @@
 # Schema cơ sở dữ liệu
 
-Nguồn chính về schema của toàn app. Migration trong code phải khớp file này (`/code-review` kiểm tra).
+Nguồn chính về schema của toàn app. Migration trong code phải khớp file này (`/review-code` kiểm tra).
 
 ## Quy ước chung
 
