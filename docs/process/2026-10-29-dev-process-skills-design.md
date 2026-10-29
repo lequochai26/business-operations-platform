@@ -626,6 +626,7 @@ Mỗi case gồm:
   - chạy hết luồng chính từ bước 1 tới bước 10 (bỏ phần chạy thật dài ngày) và mỗi nhánh phụ ít nhất một lần;
   - không phải sửa tay output;
   - xuất được `report.xlsx` và `report.pdf` có ảnh evidence.
+- **Trạng thái (29/10/2026):** bộ skill đã xong. Đã kiểm chứng: 20 skill + 1 command qua validator, 35 test của script pass, chạy thử sinh token/chụp mockup/xuất báo cáo bằng dữ liệu mẫu. Lần chạy thử thật với `group-settings` sẽ làm ở đầu GĐ0.
 
 ---
 
