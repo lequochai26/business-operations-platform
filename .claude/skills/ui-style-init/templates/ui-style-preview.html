@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Style UI – Tiệm Nhà Mio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Playfair+Display:wght@700&family=Dancing+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ui-tokens.css">
+  <style>
+    body { margin: 0; padding: var(--space-xl); background: var(--color-surface-page); color: var(--color-text-default); font-family: var(--font-family-body); font-size: var(--font-size-md); line-height: var(--line-height-normal); }
+    h1 { font-family: var(--font-family-heading); font-size: var(--font-size-xxl); margin: 0 0 var(--space-lg); }
+    h2 { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); margin: var(--space-xl) 0 var(--space-md); }
+    .row { display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center; }
+    .swatch { width: 120px; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-card); background: var(--color-surface-card); font-size: var(--font-size-xs); }
+    .swatch div { height: 56px; }
+    .swatch span { display: block; padding: var(--space-xs) var(--space-sm); }
+    .btn { font: inherit; padding: var(--space-sm) var(--space-md); border-radius: var(--radius-md); border: 1px solid transparent; cursor: pointer; }
+    .btn-primary { background: var(--color-brand-primary-strong); color: var(--color-text-on-primary); }
+    .btn-secondary { background: var(--color-surface-card); border-color: var(--color-brand-primary-strong); color: var(--color-brand-primary-strong); }
+    .btn-danger { background: var(--color-status-danger); color: var(--color-text-on-primary); }
+    .btn-ghost { background: transparent; color: var(--color-brand-primary-strong); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .field { display: flex; flex-direction: column; gap: var(--space-xs); width: 280px; }
+    .field input { font: inherit; padding: var(--space-sm); border: 1px solid var(--color-surface-border); border-radius: var(--radius-sm); }
+    .field.error input { border-color: var(--color-status-danger); }
+    .field .msg { font-size: var(--font-size-sm); color: var(--color-status-danger); }
+    .card { background: var(--color-surface-card); border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: var(--space-md); width: 280px; }
+    .alert { padding: var(--space-sm) var(--space-md); border-radius: var(--radius-md); color: var(--color-text-on-primary); }
+    .badge { display: inline-block; padding: 2px var(--space-sm); border-radius: var(--radius-pill); font-size: var(--font-size-xs); color: var(--color-text-on-primary); }
+  </style>
+</head>
+<body>
+  <h1>Style UI – Tiệm Nhà Mio</h1>
+
+  <h2>Màu</h2>
+  <div class="row">
+    <div class="swatch"><div style="background: var(--color-brand-primary)"></div><span>brand-primary</span></div>
+    <div class="swatch"><div style="background: var(--color-brand-primary-strong)"></div><span>brand-primary-strong</span></div>
+    <div class="swatch"><div style="background: var(--color-brand-cream)"></div><span>brand-cream</span></div>
+    <div class="swatch"><div style="background: var(--color-status-success)"></div><span>status-success</span></div>
+    <div class="swatch"><div style="background: var(--color-status-warning)"></div><span>status-warning</span></div>
+    <div class="swatch"><div style="background: var(--color-status-danger)"></div><span>status-danger</span></div>
+    <div class="swatch"><div style="background: var(--color-status-info)"></div><span>status-info</span></div>
+  </div>
+
+  <h2>Chữ</h2>
+  <p style="font-family: var(--font-family-heading); font-size: var(--font-size-xxl)">Tiêu đề trang – Lịch hôm nay</p>
+  <p style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold)">Tiêu đề khối – Bài chờ duyệt</p>
+  <p>Nội dung – Tiệm Nhà Mio nhận làm mẫu mắt mèo nâu, giá 99k nha bạn ơi.</p>
+  <p style="font-size: var(--font-size-sm); color: var(--color-text-muted)">Chú thích – cập nhật 5 phút trước</p>
+
+  <h2>Nút</h2>
+  <div class="row">
+    <button class="btn btn-primary">Duyệt</button>
+    <button class="btn btn-secondary">Sửa</button>
+    <button class="btn btn-danger">Bỏ</button>
+    <button class="btn btn-ghost">Xem bài gốc</button>
+    <button class="btn btn-primary" disabled>Đang lưu…</button>
+  </div>
+
+  <h2>Ô nhập</h2>
+  <div class="row">
+    <label class="field">Link group<input value="facebook.com/groups/nailq11"></label>
+    <label class="field error">Giới hạn comment/ngày<input value="51"><span class="msg">Tối đa 50</span></label>
+  </div>
+
+  <h2>Thẻ, thông báo, badge</h2>
+  <div class="row">
+    <div class="card">Bài loại 2 – hỏi slot thứ 3<br><span style="color: var(--color-text-muted); font-size: var(--font-size-sm)">Group Nail Q11 · 12 phút trước</span></div>
+    <div class="alert" style="background: var(--color-status-success)">Đã lưu cài đặt</div>
+    <div class="alert" style="background: var(--color-status-danger)">Tài khoản vận hành đã tự dừng</div>
+    <span class="badge" style="background: var(--color-status-warning)">Chờ duyệt</span>
+    <span class="badge" style="background: var(--color-status-success)">Đã comment</span>
+    <span class="badge" style="background: var(--color-status-info)">Chờ báo giá</span>
+  </div>
+</body>
+</html>

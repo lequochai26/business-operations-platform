@@ -1,2 +1,4 @@
 conventions-init
 test-viewpoints-init
+ui-style-init
+ui-style-update
