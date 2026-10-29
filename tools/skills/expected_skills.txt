@@ -4,3 +4,4 @@ ui-style-init
 ui-style-update
 phase-kickoff
 decision-log
+detailed-design
