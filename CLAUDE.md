@@ -16,7 +16,7 @@ Mỗi giai đoạn trong `docs/project/05-roadmap.md` đi theo thứ tự:
   → (từng tính năng) /detailed-design → /ui-design (nếu có màn hình, gọi /component-design khi cần)
      → /test-case-design → /design-review
   → /implementation-plan
-  → (từng task) /implement-task → /code-review
+  → (từng task) /implement-task → /review-code
   → (từng tính năng) /manual-test-run → [/feedback | /bug-fix → /manual-test-run --retest]
   → /acceptance-report
 ```

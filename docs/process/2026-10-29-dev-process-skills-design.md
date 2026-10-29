@@ -21,7 +21,7 @@
 - **Đợt 1** gồm 20 skill và 1 command:
   - **Khởi tạo:** `conventions-init`, `ui-style-init`, `ui-style-update`, `test-viewpoints-init`.
   - **Thiết kế:** `phase-kickoff`, `detailed-design`, `ui-design`, `component-design`, `test-case-design`, `design-review`, `decision-log`.
-  - **Code:** `implementation-plan`, `implement-task`, `tdd`, `code-review`, `bug-fix`, `change-request`.
+  - **Code:** `implementation-plan`, `implement-task`, `tdd`, `review-code`, `bug-fix`, `change-request`.
   - **Test và nghiệm thu:** `manual-test-run`, `feedback`, `acceptance-report`.
   - **Command:** `/phase-status`.
 - **Đợt sau:** fixture thật, eval AI, deploy, sửa lỗi khi Facebook đổi giao diện, đổi prompt/model, bật tính năng theo nấc, diễn tập khôi phục sao lưu.
@@ -78,7 +78,7 @@
      /detailed-design → /ui-design (nếu có màn hình, gọi /component-design khi cần)
      → /test-case-design → /design-review
   → /implementation-plan
-  → (với từng task) /implement-task → /code-review
+  → (với từng task) /implement-task → /review-code
   → (với từng tính năng) /manual-test-run → [/bug-fix → /manual-test-run --retest]
   → /acceptance-report
 ```
@@ -159,7 +159,7 @@ Nhóm khởi tạo chạy **một lần** trước giai đoạn 0, theo thứ t�
 
 **8. Review code**
 ```text
-> /code-review
+> /review-code
 ```
 - **Input:** diff nhánh hiện tại so với `main`, task và thiết kế liên quan, `db-schema.md`, `openapi.yaml`.
 - **Output:** danh sách vấn đề → sửa → merge (khi người dùng đồng ý).
@@ -389,7 +389,7 @@ Mỗi skill được mô tả theo: mục đích, lệnh gọi, điều kiện t
 - **Mục đích:** làm một task.
 - **Lệnh:** `/implement-task <mã task>`
 - **Điều kiện tiên quyết:** kế hoạch đã duyệt, các task phụ thuộc đã xong.
-- **Luồng:** tạo nhánh theo quy ước → `tdd` cho từng hành vi → chạy toàn bộ test, typecheck, lint → tự review theo checklist của `code-review` → commit → cập nhật `plan.md` và `status.md`.
+- **Luồng:** tạo nhánh theo quy ước → `tdd` cho từng hành vi → chạy toàn bộ test, typecheck, lint → tự review theo checklist của `review-code` → commit → cập nhật `plan.md` và `status.md`.
 - **Output:** nhánh có commit, kết quả test.
 - **Gọi:** `tdd`.
 
@@ -399,9 +399,9 @@ Mỗi skill được mô tả theo: mục đích, lệnh gọi, điều kiện t
 - **Quy tắc:** viết test thất bại trước và xác nhận nó thất bại đúng lý do → code tối thiểu để pass → refactor khi test vẫn xanh. Không viết code nghiệp vụ khi chưa có test thất bại.
 - **Quy ước test tự động** (mục 9) áp dụng ở đây.
 
-#### `code-review`
+#### `review-code`
 - **Mục đích:** review code theo checklist dự án.
-- **Lệnh:** `/code-review`
+- **Lệnh:** `/review-code`
 - **Input:** như mục 3.1 bước 8.
 - **Checklist:**
   - đúng và đủ theo task và thiết kế;
@@ -593,7 +593,7 @@ Mỗi case gồm:
 
 ---
 
-## 9. Quy ước test tự động (dùng trong `tdd`, `implement-task`, `code-review`)
+## 9. Quy ước test tự động (dùng trong `tdd`, `implement-task`, `review-code`)
 
 - **Unit test** cho logic nghiệp vụ, đồng hồ truyền vào từ ngoài (không gọi `Date.now()` trực tiếp).
 - **Property-based test** cho bất biến quan trọng (lịch không trùng, khung đề xuất luôn trống).
