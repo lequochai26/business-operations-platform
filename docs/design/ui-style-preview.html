@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Style UI – Tiệm Nhà Mio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ui-tokens.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: var(--space-xxl); background: var(--color-surface-page); color: var(--color-text-default); font-family: var(--font-family-body); font-size: var(--font-size-md); line-height: var(--line-height-normal); }
+    h1 { font-family: var(--font-family-heading); font-size: var(--font-size-xxl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); margin: 0; }
+    h2 { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); margin: 0 0 var(--space-lg); }
+    h3 { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-muted); margin: var(--space-lg) 0 var(--space-sm); }
+    p { margin: 0; }
+    .sub { font-size: var(--font-size-sm); color: var(--color-text-muted); margin: var(--space-xs) 0 var(--space-xl); }
+    section { background: var(--color-surface-card); border: var(--border-width-default) solid var(--color-surface-border); border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: var(--space-xl); margin-bottom: var(--space-lg); }
+    .row { display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center; }
+    .row.top { align-items: flex-start; }
+    .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); }
+    .muted { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+    .state-label { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+    .matrix { display: grid; grid-template-columns: calc(var(--space-xxxl) * 2) repeat(5, 1fr); gap: var(--space-md); align-items: center; }
+    .matrix .head { font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-text-muted); }
+
+    /* Màu */
+    .swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--space-md); }
+    .swatch { border: var(--border-width-default) solid var(--color-surface-border); border-radius: var(--radius-md); overflow: hidden; font-size: var(--font-size-xs); }
+    .swatch .chip { height: var(--space-xxxl); border-bottom: var(--border-width-default) solid var(--color-surface-divider); }
+    .swatch .name { display: block; padding: var(--space-xs) var(--space-sm) 0; font-weight: var(--font-weight-semibold); }
+    .swatch .value { display: block; padding: 0 var(--space-sm) var(--space-xs); color: var(--color-text-muted); }
+
+    /* Chữ */
+    .type-row { display: grid; grid-template-columns: calc(var(--space-xxxl) * 4) 1fr; gap: var(--space-lg); align-items: baseline; padding: var(--space-sm) 0; border-bottom: var(--border-width-default) solid var(--color-surface-divider); }
+    .type-row:last-child { border-bottom: 0; }
+    .t-page { font-family: var(--font-family-heading); font-size: var(--font-size-xxl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); }
+    .t-block { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); }
+    .t-dialog { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); }
+    .t-caption { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+    .t-small { font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); }
+    .t-number { font-size: var(--font-size-xxl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); }
+    .t-logo { font-family: var(--font-family-decorative); font-size: var(--font-size-logo); color: var(--color-brand-primary-strong); line-height: var(--line-height-tight); }
+
+    /* Khoảng cách, bo góc, bóng */
+    .space-bar { height: var(--space-md); background: var(--color-brand-primary); border-radius: var(--radius-pill); }
+    .space-item { display: grid; grid-template-columns: calc(var(--space-xxxl) * 2) auto 1fr; gap: var(--space-md); align-items: center; font-size: var(--font-size-sm); }
+    .shape { width: calc(var(--space-xxxl) * 2); height: calc(var(--space-xxxl) + var(--space-lg)); background: var(--color-surface-subtle); border: var(--border-width-default) solid var(--color-surface-border); display: flex; align-items: center; justify-content: center; font-size: var(--font-size-xs); }
+
+    /* Thanh điều hướng */
+    .nav { width: var(--size-nav-width); background: var(--color-nav-background); color: var(--color-nav-text); padding: var(--space-xl) var(--space-lg); border-radius: var(--radius-md); }
+    .nav .logo { font-family: var(--font-family-decorative); font-size: var(--font-size-logo); line-height: 1; }
+    .nav .logo-sub { font-size: var(--font-size-xs); color: var(--color-nav-text-muted); margin-top: var(--space-xs); }
+    .nav ul { list-style: none; margin: var(--space-xl) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-xxs); }
+    .nav li { display: flex; justify-content: space-between; align-items: center; min-height: var(--size-control-md); padding: 0 var(--space-md); border-radius: var(--radius-sm); }
+    .nav li.is-hover { background: var(--color-nav-item-hover); }
+    .nav li.is-active { background: var(--color-nav-item-active-background); color: var(--color-nav-item-active-text); font-weight: var(--font-weight-semibold); }
+    .nav li.is-focus { outline: var(--border-width-focus) solid var(--color-focus-ring-on-nav); outline-offset: var(--space-xxs); }
+    .nav li.divider { min-height: 0; padding: 0; margin: var(--space-md) 0; border-radius: 0; border-top: var(--border-width-default) solid var(--color-nav-divider); }
+    .nav .count { font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); padding: 0 var(--space-sm); border-radius: var(--radius-pill); background: var(--color-nav-count-background); color: var(--color-nav-count-text); }
+    .nav .user { margin-top: var(--space-xl); font-size: var(--font-size-sm); color: var(--color-nav-text-muted); }
+    .nav-notes li { margin-bottom: var(--space-xs); }
+
+    /* Nút */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm); height: var(--size-control-md); padding: 0 var(--space-lg); font: inherit; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); border-radius: var(--radius-sm); border: var(--border-width-default) solid transparent; cursor: pointer; white-space: nowrap; transition: background var(--duration-fast); }
+    .btn-sm { height: var(--size-control-sm); padding: 0 var(--space-md); }
+    .btn-primary { background: var(--color-brand-primary-strong); color: var(--color-text-on-primary); }
+    .btn-primary.is-hover { background: var(--color-brand-primary-stronger); }
+    .btn-secondary { background: var(--color-surface-card); border-color: var(--color-brand-primary-strong); color: var(--color-brand-primary-strong); }
+    .btn-secondary.is-hover { background: var(--color-brand-primary-soft); }
+    .btn-danger { background: var(--color-status-danger); color: var(--color-text-on-primary); }
+    .btn-danger.is-hover { background: var(--color-status-danger-hover); }
+    .btn-ghost { background: transparent; color: var(--color-brand-primary-strong); }
+    .btn-ghost.is-hover { background: var(--color-brand-primary-soft); }
+    .btn.is-focus { outline: var(--border-width-focus) solid var(--color-focus-ring); outline-offset: var(--space-xxs); }
+    .btn:disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }
+    .btn.is-loading { cursor: progress; }
+    .spinner { width: var(--size-icon); height: var(--size-icon); border: var(--border-width-focus) solid currentColor; border-right-color: transparent; border-radius: var(--radius-pill); animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Ô nhập */
+    .field { display: flex; flex-direction: column; gap: var(--space-xs); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); }
+    .input { width: 100%; height: var(--size-control-md); padding: 0 var(--space-md); font: inherit; font-size: var(--font-size-md); font-weight: var(--font-weight-regular); color: var(--color-text-default); background: var(--color-surface-card); border: var(--border-width-default) solid var(--color-control-border); border-radius: var(--radius-sm); }
+    textarea.input { height: auto; padding: var(--space-sm) var(--space-md); resize: vertical; line-height: var(--line-height-normal); }
+    .input::placeholder { color: var(--color-text-muted); }
+    .input.is-hover { border-color: var(--color-control-border-hover); }
+    .input.is-focus { outline: var(--border-width-focus) solid var(--color-focus-ring); outline-offset: var(--space-xxs); border-color: var(--color-control-border-hover); }
+    .input:disabled { background: var(--color-control-background-disabled); opacity: var(--opacity-disabled); cursor: not-allowed; }
+    .field.is-error .input { border-color: var(--color-status-danger); }
+    .hint { font-size: var(--font-size-sm); font-weight: var(--font-weight-regular); color: var(--color-text-muted); }
+    .field.is-error .hint { color: var(--color-status-danger); }
+
+    /* Công tắc, ô chọn */
+    .toggle { display: inline-flex; align-items: center; gap: var(--space-sm); font-size: var(--font-size-md); }
+    .toggle .track { width: calc(var(--size-icon) * 2.5); height: calc(var(--size-icon) + var(--space-xs) * 2); border-radius: var(--radius-pill); background: var(--color-control-border); position: relative; transition: background var(--duration-normal); }
+    .toggle .track::after { content: ''; position: absolute; top: var(--space-xs); left: var(--space-xs); width: var(--size-icon); height: var(--size-icon); border-radius: var(--radius-pill); background: var(--color-surface-card); transition: left var(--duration-normal); }
+    .toggle.is-on .track { background: var(--color-brand-primary-strong); }
+    .toggle.is-on .track::after { left: calc(100% - var(--size-icon) - var(--space-xs)); }
+    .toggle.is-focus .track { outline: var(--border-width-focus) solid var(--color-focus-ring); outline-offset: var(--space-xxs); }
+    .toggle.is-disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }
+    .check { display: inline-flex; align-items: center; gap: var(--space-sm); font-size: var(--font-size-md); }
+    .check .box { width: var(--size-icon); height: var(--size-icon); border: var(--border-width-default) solid var(--color-control-border); border-radius: var(--space-xs); background: var(--color-surface-card); display: inline-flex; align-items: center; justify-content: center; color: var(--color-text-on-primary); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); line-height: 1; }
+    .check.is-on .box { background: var(--color-brand-primary-strong); border-color: var(--color-brand-primary-strong); }
+    .check.is-focus .box { outline: var(--border-width-focus) solid var(--color-focus-ring); outline-offset: var(--space-xxs); }
+    .check.is-disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }
+
+    /* Tab */
+    .tabs { display: flex; gap: var(--space-xs); border-bottom: var(--border-width-default) solid var(--color-surface-divider); }
+    .tab { padding: var(--space-sm) var(--space-md); font-size: var(--font-size-sm); color: var(--color-text-muted); border-bottom: var(--border-width-focus) solid transparent; margin-bottom: calc(var(--border-width-default) * -1); }
+    .tab span { font-size: var(--font-size-xs); margin-left: var(--space-xs); }
+    .tab.is-active { color: var(--color-brand-primary-strong); border-color: var(--color-brand-primary); font-weight: var(--font-weight-semibold); }
+    .tab.is-hover { color: var(--color-text-default); }
+    .tab.is-focus { outline: var(--border-width-focus) solid var(--color-focus-ring); outline-offset: calc(var(--space-xxs) * -1); border-radius: var(--radius-sm); }
+
+    /* Thẻ */
+    .card { background: var(--color-surface-card); border: var(--border-width-default) solid var(--color-surface-border); border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: var(--space-lg) var(--space-xl); }
+    .card-title { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); }
+    .quote { background: var(--color-surface-page); border: var(--border-width-default) solid var(--color-surface-divider); border-radius: var(--radius-sm); padding: var(--space-sm) var(--space-md); font-size: var(--font-size-sm); margin: var(--space-sm) 0 var(--space-md); }
+    .quote-label { font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-top: var(--space-md); }
+    a { color: var(--color-text-link); }
+
+    /* Thông báo */
+    .alert { display: flex; gap: var(--space-md); align-items: baseline; padding: var(--space-md) var(--space-lg); border-radius: var(--radius-sm); font-size: var(--font-size-sm); border-left: var(--border-width-accent) solid; }
+    .alert b { font-weight: var(--font-weight-semibold); white-space: nowrap; }
+    .alert + .alert { margin-top: var(--space-sm); }
+    .alert-success { background: var(--color-status-soft-success); color: var(--color-status-text-success); border-color: var(--color-status-success); }
+    .alert-warning { background: var(--color-status-soft-warning); color: var(--color-status-text-warning); border-color: var(--color-status-warning); }
+    .alert-danger { background: var(--color-status-soft-danger); color: var(--color-status-text-danger); border-color: var(--color-status-danger); }
+    .alert-info { background: var(--color-status-soft-info); color: var(--color-status-text-info); border-color: var(--color-status-info); }
+    .toast { display: flex; gap: var(--space-md); align-items: baseline; justify-content: space-between; width: calc(var(--size-nav-width) * 1.6); padding: var(--space-md) var(--space-lg); background: var(--color-surface-card); border-radius: var(--radius-md); box-shadow: var(--shadow-overlay); border-left: var(--border-width-accent) solid; font-size: var(--font-size-sm); }
+    .toast + .toast { margin-top: var(--space-md); }
+    .toast-success { border-color: var(--color-status-success); }
+    .toast-danger { border-color: var(--color-status-danger); }
+
+    /* Badge */
+    .badge { display: inline-block; padding: var(--space-xxs) var(--space-md); border-radius: var(--radius-pill); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); white-space: nowrap; }
+    .badge-success { background: var(--color-status-soft-success); color: var(--color-status-text-success); }
+    .badge-warning { background: var(--color-status-soft-warning); color: var(--color-status-text-warning); }
+    .badge-danger { background: var(--color-status-soft-danger); color: var(--color-status-text-danger); }
+    .badge-info { background: var(--color-status-soft-info); color: var(--color-status-text-info); }
+    .badge-neutral { background: var(--color-status-soft-neutral); color: var(--color-status-text-neutral); }
+
+    /* Thanh tiến độ */
+    .progress-row { display: grid; grid-template-columns: 1fr auto; gap: var(--space-sm) var(--space-md); align-items: center; font-size: var(--font-size-sm); }
+    .progress { grid-column: 1 / -1; height: var(--space-sm); background: var(--color-surface-divider); border-radius: var(--radius-pill); overflow: hidden; }
+    .progress > div { height: 100%; background: var(--color-brand-primary); }
+    .progress.is-near-limit > div { background: var(--color-status-warning); }
+  </style>
+</head>
+<body>
+  <h1>Style UI – Tiệm Nhà Mio</h1>
+  <p class="sub">Kem ấm, sage nhấn, thanh điều hướng xanh đậm · nguồn: docs/design/ui-style.md · mọi giá trị lấy từ ui-tokens.css</p>
+
+  <section>
+    <h2>Màu</h2>
+    <h3>brand, text, surface, control</h3>
+    <div class="swatches">
+      <div class="swatch" data-token="color-brand-primary"></div>
+      <div class="swatch" data-token="color-brand-primary-strong"></div>
+      <div class="swatch" data-token="color-brand-primary-stronger"></div>
+      <div class="swatch" data-token="color-brand-primary-soft"></div>
+      <div class="swatch" data-token="color-brand-cream"></div>
+      <div class="swatch" data-token="color-text-default"></div>
+      <div class="swatch" data-token="color-text-muted"></div>
+      <div class="swatch" data-token="color-text-on-primary"></div>
+      <div class="swatch" data-token="color-text-link"></div>
+      <div class="swatch" data-token="color-surface-page"></div>
+      <div class="swatch" data-token="color-surface-card"></div>
+      <div class="swatch" data-token="color-surface-subtle"></div>
+      <div class="swatch" data-token="color-surface-border"></div>
+      <div class="swatch" data-token="color-surface-divider"></div>
+      <div class="swatch" data-token="color-surface-overlay"></div>
+      <div class="swatch" data-token="color-control-border"></div>
+      <div class="swatch" data-token="color-control-border-hover"></div>
+      <div class="swatch" data-token="color-control-background-disabled"></div>
+    </div>
+    <h3>nav, focus</h3>
+    <div class="swatches">
+      <div class="swatch" data-token="color-nav-background"></div>
+      <div class="swatch" data-token="color-nav-text"></div>
+      <div class="swatch" data-token="color-nav-text-muted"></div>
+      <div class="swatch" data-token="color-nav-item-hover"></div>
+      <div class="swatch" data-token="color-nav-item-active-background"></div>
+      <div class="swatch" data-token="color-nav-item-active-text"></div>
+      <div class="swatch" data-token="color-nav-divider"></div>
+      <div class="swatch" data-token="color-nav-count-background"></div>
+      <div class="swatch" data-token="color-nav-count-text"></div>
+      <div class="swatch" data-token="color-focus-ring"></div>
+      <div class="swatch" data-token="color-focus-ring-on-nav"></div>
+    </div>
+    <h3>status, status-soft, status-text</h3>
+    <div class="swatches">
+      <div class="swatch" data-token="color-status-success"></div>
+      <div class="swatch" data-token="color-status-warning"></div>
+      <div class="swatch" data-token="color-status-danger"></div>
+      <div class="swatch" data-token="color-status-danger-hover"></div>
+      <div class="swatch" data-token="color-status-info"></div>
+      <div class="swatch" data-token="color-status-neutral"></div>
+      <div class="swatch" data-token="color-status-soft-success"></div>
+      <div class="swatch" data-token="color-status-soft-warning"></div>
+      <div class="swatch" data-token="color-status-soft-danger"></div>
+      <div class="swatch" data-token="color-status-soft-info"></div>
+      <div class="swatch" data-token="color-status-soft-neutral"></div>
+      <div></div>
+      <div class="swatch" data-token="color-status-text-success"></div>
+      <div class="swatch" data-token="color-status-text-warning"></div>
+      <div class="swatch" data-token="color-status-text-danger"></div>
+      <div class="swatch" data-token="color-status-text-info"></div>
+      <div class="swatch" data-token="color-status-text-neutral"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Chữ</h2>
+    <div class="type-row"><span class="muted">Tiêu đề trang · heading xxl</span><span class="t-page">Bài trong group</span></div>
+    <div class="type-row"><span class="muted">Tiêu đề hộp thoại · xl bold</span><span class="t-dialog">Dừng toàn bộ tự động hóa?</span></div>
+    <div class="type-row"><span class="muted">Tiêu đề khối · lg bold</span><span class="t-block">Việc cần làm ngay</span></div>
+    <div class="type-row"><span class="muted">Nội dung · md</span><span>Có tiệm nào gần Q11 nhận làm mắt mèo chiều nay không ạ, khoảng 3h, ngân sách tầm 150k…</span></div>
+    <div class="type-row"><span class="muted">Chú thích · sm muted</span><span class="t-caption">Nail Quận 11 – Tìm thợ · đăng 12 phút trước</span></div>
+    <div class="type-row"><span class="muted">Nhãn nhỏ · xs semibold</span><span class="t-small">COMMENT ĐỀ XUẤT</span></div>
+    <div class="type-row"><span class="muted">Số liệu · body xxl bold</span><span class="t-number">12 · 18 / 40 · Q11</span></div>
+    <div class="type-row"><span class="muted">Logo · decorative (chỉ logo)</span><span class="t-logo">Mio</span></div>
+    <div class="type-row"><span class="muted">Dấu tiếng Việt</span><span>Ắ Ằ Ẳ Ẵ Ặ Ấ Ầ Ẩ Ẫ Ậ Ế Ề Ể Ễ Ệ Ố Ồ Ổ Ỗ Ộ Ớ Ờ Ở Ỡ Ợ Ứ Ừ Ử Ữ Ự · đặt lịch, khách mới, thợ, nhắn Page giữ slot nha</span></div>
+    <div class="type-row"><span class="muted">Dấu tiếng Việt · heading</span><span class="t-page">Nhật ký hệ thống · Cài đặt</span></div>
+  </section>
+
+  <section>
+    <h2>Khoảng cách, bo góc, bóng</h2>
+    <div class="cols-2">
+      <div>
+        <h3>space</h3>
+        <div class="space-item"><span>space-xxs</span><div class="space-bar" style="width: var(--space-xxs)"></div><span class="muted" data-value="space-xxs"></span></div>
+        <div class="space-item"><span>space-xs</span><div class="space-bar" style="width: var(--space-xs)"></div><span class="muted" data-value="space-xs"></span></div>
+        <div class="space-item"><span>space-sm</span><div class="space-bar" style="width: var(--space-sm)"></div><span class="muted" data-value="space-sm"></span></div>
+        <div class="space-item"><span>space-md</span><div class="space-bar" style="width: var(--space-md)"></div><span class="muted" data-value="space-md"></span></div>
+        <div class="space-item"><span>space-lg</span><div class="space-bar" style="width: var(--space-lg)"></div><span class="muted" data-value="space-lg"></span></div>
+        <div class="space-item"><span>space-xl</span><div class="space-bar" style="width: var(--space-xl)"></div><span class="muted" data-value="space-xl"></span></div>
+        <div class="space-item"><span>space-xxl</span><div class="space-bar" style="width: var(--space-xxl)"></div><span class="muted" data-value="space-xxl"></span></div>
+        <div class="space-item"><span>space-xxxl</span><div class="space-bar" style="width: var(--space-xxxl)"></div><span class="muted" data-value="space-xxxl"></span></div>
+      </div>
+      <div>
+        <h3>radius</h3>
+        <div class="row">
+          <div class="shape" style="border-radius: var(--radius-sm)">radius-sm</div>
+          <div class="shape" style="border-radius: var(--radius-md)">radius-md</div>
+          <div class="shape" style="border-radius: var(--radius-lg)">radius-lg</div>
+          <div class="shape" style="border-radius: var(--radius-pill)">radius-pill</div>
+        </div>
+        <h3>shadow</h3>
+        <div class="row">
+          <div class="shape" style="background: var(--color-surface-card); border-radius: var(--radius-md); box-shadow: var(--shadow-card)">shadow-card</div>
+          <div class="shape" style="background: var(--color-surface-card); border-radius: var(--radius-md); box-shadow: var(--shadow-overlay)">shadow-overlay</div>
+        </div>
+        <h3>breakpoint (chưa dùng)</h3>
+        <p class="muted">mobile <span data-value="breakpoint-mobile"></span> · tablet <span data-value="breakpoint-tablet"></span> · desktop <span data-value="breakpoint-desktop"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Thanh điều hướng</h2>
+    <div class="row top">
+      <nav class="nav">
+        <div class="logo">Mio</div>
+        <div class="logo-sub">Tiệm Nhà Mio · vận hành</div>
+        <ul>
+          <li>Hôm nay</li>
+          <li class="is-active">Bài trong group <span class="count">3</span></li>
+          <li class="is-hover">Báo giá <span class="count">1</span></li>
+          <li>Lịch</li>
+          <li class="is-focus">Khách <span class="count">2</span></li>
+          <li>Mẫu mới</li>
+          <li>Kho content</li>
+          <li>Nhật ký đăng bài</li>
+          <li class="divider"></li>
+          <li>Cài đặt</li>
+          <li>Nhật ký hệ thống</li>
+        </ul>
+        <div class="user">Huỳnh Mio · Quản lý</div>
+      </nav>
+      <ul class="muted nav-notes">
+        <li>Bài trong group: đang chọn</li>
+        <li>Báo giá: hover</li>
+        <li>Khách: focus bàn phím</li>
+        <li>Viên số: số việc đang chờ</li>
+        <li>Đường kẻ: tách nhóm chỉ dành cho Quản lý</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Nút</h2>
+    <div class="matrix">
+      <span></span><span class="head">Bình thường</span><span class="head">Hover</span><span class="head">Focus</span><span class="head">Disabled</span><span class="head">Loading</span>
+      <span class="state-label">primary</span>
+      <div><button class="btn btn-primary">Duyệt</button></div>
+      <div><button class="btn btn-primary is-hover">Duyệt</button></div>
+      <div><button class="btn btn-primary is-focus">Duyệt</button></div>
+      <div><button class="btn btn-primary" disabled>Duyệt</button></div>
+      <div><button class="btn btn-primary is-loading"><span class="spinner"></span>Đang lưu…</button></div>
+      <span class="state-label">secondary</span>
+      <div><button class="btn btn-secondary">Sửa</button></div>
+      <div><button class="btn btn-secondary is-hover">Sửa</button></div>
+      <div><button class="btn btn-secondary is-focus">Sửa</button></div>
+      <div><button class="btn btn-secondary" disabled>Sửa</button></div>
+      <div><button class="btn btn-secondary is-loading"><span class="spinner"></span>Đang tải…</button></div>
+      <span class="state-label">danger</span>
+      <div><button class="btn btn-danger">Dừng khẩn cấp</button></div>
+      <div><button class="btn btn-danger is-hover">Dừng khẩn cấp</button></div>
+      <div><button class="btn btn-danger is-focus">Dừng khẩn cấp</button></div>
+      <div><button class="btn btn-danger" disabled>Dừng khẩn cấp</button></div>
+      <div><button class="btn btn-danger is-loading"><span class="spinner"></span>Đang dừng…</button></div>
+      <span class="state-label">ghost</span>
+      <div><button class="btn btn-ghost">Xem bài gốc</button></div>
+      <div><button class="btn btn-ghost is-hover">Xem bài gốc</button></div>
+      <div><button class="btn btn-ghost is-focus">Xem bài gốc</button></div>
+      <div><button class="btn btn-ghost" disabled>Xem bài gốc</button></div>
+      <div><button class="btn btn-ghost is-loading"><span class="spinner"></span>Đang mở…</button></div>
+      <span class="state-label">cỡ sm</span>
+      <div><button class="btn btn-primary btn-sm">Duyệt</button></div>
+      <div><button class="btn btn-secondary btn-sm">Sửa</button></div>
+      <div><button class="btn btn-danger btn-sm">Xóa</button></div>
+      <div><button class="btn btn-ghost btn-sm">Bỏ</button></div>
+      <span></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ô nhập</h2>
+    <div class="matrix">
+      <span></span><span class="head">Bình thường</span><span class="head">Hover</span><span class="head">Focus</span><span class="head">Lỗi</span><span class="head">Disabled</span>
+      <span class="state-label">text</span>
+      <label class="field">Link group<input class="input" placeholder="Dán link hoặc ID group"><span class="hint">Ví dụ facebook.com/groups/…</span></label>
+      <label class="field">Link group<input class="input is-hover" value="facebook.com/groups/nailq11"><span class="hint">Ví dụ facebook.com/groups/…</span></label>
+      <label class="field">Link group<input class="input is-focus" value="facebook.com/groups/nailq11"><span class="hint">Ví dụ facebook.com/groups/…</span></label>
+      <label class="field is-error">Link group<input class="input" value="nailq11"><span class="hint">Link group không hợp lệ</span></label>
+      <label class="field">Link group<input class="input" value="facebook.com/groups/nailq11" disabled><span class="hint">Đang quét, chưa sửa được</span></label>
+      <span class="state-label">số</span>
+      <label class="field">Giới hạn comment/ngày<input class="input" value="40"><span class="hint">Từ 1 đến 50</span></label>
+      <label class="field">Giới hạn comment/ngày<input class="input is-hover" value="40"><span class="hint">Từ 1 đến 50</span></label>
+      <label class="field">Giới hạn comment/ngày<input class="input is-focus" value="40"><span class="hint">Từ 1 đến 50</span></label>
+      <label class="field is-error">Giới hạn comment/ngày<input class="input" value="51"><span class="hint">Tối đa 50</span></label>
+      <label class="field">Giới hạn comment/ngày<input class="input" value="40" disabled><span class="hint">Từ 1 đến 50</span></label>
+      <span class="state-label">chọn</span>
+      <label class="field">Chế độ gửi<select class="input"><option>Duyệt trước</option></select><span class="hint">Áp dụng cho toàn app</span></label>
+      <label class="field">Chế độ gửi<select class="input is-hover"><option>Duyệt trước</option></select><span class="hint">Áp dụng cho toàn app</span></label>
+      <label class="field">Chế độ gửi<select class="input is-focus"><option>Tự gửi</option></select><span class="hint">Áp dụng cho toàn app</span></label>
+      <label class="field is-error">Chế độ gửi<select class="input"><option>Chọn chế độ</option></select><span class="hint">Chưa chọn chế độ gửi</span></label>
+      <label class="field">Chế độ gửi<select class="input" disabled><option>Duyệt trước</option></select><span class="hint">Áp dụng cho toàn app</span></label>
+      <span class="state-label">giờ</span>
+      <label class="field">Giờ mở cửa<input class="input" type="time" value="09:00"><span class="hint">Giờ bắt đầu nhận khách</span></label>
+      <label class="field">Giờ mở cửa<input class="input is-hover" type="time" value="09:00"><span class="hint">Giờ bắt đầu nhận khách</span></label>
+      <label class="field">Giờ mở cửa<input class="input is-focus" type="time" value="09:00"><span class="hint">Giờ bắt đầu nhận khách</span></label>
+      <label class="field is-error">Giờ mở cửa<input class="input" type="time" value="21:00"><span class="hint">Phải trước giờ đóng cửa</span></label>
+      <label class="field">Giờ mở cửa<input class="input" type="time" value="09:00" disabled><span class="hint">Giờ bắt đầu nhận khách</span></label>
+      <span class="state-label">văn bản</span>
+      <label class="field">Giọng tiệm<textarea class="input" rows="2" placeholder="Mô tả ngắn giọng văn của tiệm"></textarea><span class="hint">Tối đa 300 ký tự</span></label>
+      <label class="field">Giọng tiệm<textarea class="input is-hover" rows="2">Thân thiện, gần gũi, xưng mình – gọi bạn/nàng.</textarea><span class="hint">Tối đa 300 ký tự</span></label>
+      <label class="field">Giọng tiệm<textarea class="input is-focus" rows="2">Thân thiện, gần gũi, xưng mình – gọi bạn/nàng.</textarea><span class="hint">Tối đa 300 ký tự</span></label>
+      <label class="field is-error">Giọng tiệm<textarea class="input" rows="2"></textarea><span class="hint">Không được để trống</span></label>
+      <label class="field">Giọng tiệm<textarea class="input" rows="2" disabled>Thân thiện, gần gũi, xưng mình – gọi bạn/nàng.</textarea><span class="hint">Tối đa 300 ký tự</span></label>
+    </div>
+  </section>
+
+  <section>
+    <h2>Công tắc, ô chọn, tab</h2>
+    <div class="matrix">
+      <span></span><span class="head">Tắt</span><span class="head">Bật</span><span class="head">Focus</span><span class="head">Disabled tắt</span><span class="head">Disabled bật</span>
+      <span class="state-label">công tắc</span>
+      <span class="toggle"><span class="track"></span>Tự trả lời</span>
+      <span class="toggle is-on"><span class="track"></span>Tự trả lời</span>
+      <span class="toggle is-on is-focus"><span class="track"></span>Tự trả lời</span>
+      <span class="toggle is-disabled"><span class="track"></span>Tự trả lời</span>
+      <span class="toggle is-on is-disabled"><span class="track"></span>Tự trả lời</span>
+      <span class="state-label">ô chọn</span>
+      <span class="check"><span class="box"></span>Cho phép comment</span>
+      <span class="check is-on"><span class="box">✓</span>Cho phép comment</span>
+      <span class="check is-on is-focus"><span class="box">✓</span>Cho phép comment</span>
+      <span class="check is-disabled"><span class="box"></span>Cho phép comment</span>
+      <span class="check is-on is-disabled"><span class="box">✓</span>Cho phép comment</span>
+    </div>
+    <h3>tab (đang chọn · hover · focus · thường)</h3>
+    <div class="tabs">
+      <div class="tab">Tất cả<span>48</span></div>
+      <div class="tab is-active">Chờ duyệt<span>3</span></div>
+      <div class="tab is-hover">Đã comment<span>18</span></div>
+      <div class="tab is-focus">Bỏ qua<span>25</span></div>
+      <div class="tab">Thất bại<span>2</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Thẻ, badge, thanh tiến độ</h2>
+    <div class="cols-2">
+      <div class="card">
+        <div class="row"><span class="card-title">Tìm chỗ làm nail gần Q11 chiều nay</span><span class="badge badge-warning">Chờ duyệt</span></div>
+        <p class="muted">Nail Quận 11 – Tìm thợ · đăng 12 phút trước · <a href="#">xem bài gốc</a></p>
+        <div class="quote-label">Comment đề xuất</div>
+        <div class="quote">Nàng ơi, Tiệm Nhà Mio ở Q11 chiều nay còn slot 3h nè, mẫu mắt mèo bên mình từ 99k. Nàng ib Page giữ slot nha 💚</div>
+        <div class="row"><button class="btn btn-primary btn-sm">Duyệt</button><button class="btn btn-secondary btn-sm">Sửa</button><button class="btn btn-ghost btn-sm">Bỏ</button></div>
+      </div>
+      <div>
+        <h3>badge</h3>
+        <div class="row">
+          <span class="badge badge-success">Đang chạy</span>
+          <span class="badge badge-success">Đã xác nhận</span>
+          <span class="badge badge-warning">Chờ duyệt</span>
+          <span class="badge badge-warning">Chờ thợ 25 phút</span>
+          <span class="badge badge-danger">Comment thất bại</span>
+          <span class="badge badge-danger">Đã tự dừng</span>
+          <span class="badge badge-info">Loại 1 · tìm chỗ làm</span>
+          <span class="badge badge-info">Đã nhắc</span>
+          <span class="badge badge-neutral">Khung bận</span>
+          <span class="badge badge-neutral">Bỏ qua</span>
+        </div>
+        <h3>thanh tiến độ</h3>
+        <div class="progress-row"><span>Comment hôm nay</span><span>18 / 40</span><div class="progress"><div style="width: 45%"></div></div></div>
+        <div class="progress-row" style="margin-top: var(--space-md)"><span>Comment group Nail Q11</span><span>9 / 10</span><div class="progress is-near-limit"><div style="width: 90%"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Thông báo</h2>
+    <div class="cols-2">
+      <div>
+        <h3>banner trong trang</h3>
+        <div class="alert alert-success"><b>Đã lưu</b>Cài đặt quét và comment đã được cập nhật.</div>
+        <div class="alert alert-warning"><b>Lưu ý</b>Group “Nail Quận 11 – Tìm thợ” vừa bật chặn link: comment sẽ không kèm link Page.</div>
+        <div class="alert alert-danger"><b>Đã tự dừng</b>Tài khoản vận hành gặp 3 lỗi liên tiếp lúc 14:05. Xem ảnh màn hình trong Nhật ký hệ thống.</div>
+        <div class="alert alert-info"><b>Mẹo</b>Bấm “Phân loại sai” để app học lại cách lọc bài.</div>
+      </div>
+      <div>
+        <h3>toast</h3>
+        <div class="toast toast-success"><span>Đã duyệt comment cho bài “Tìm chỗ làm nail gần Q11”.</span><button class="btn btn-ghost btn-sm">Hoàn tác</button></div>
+        <div class="toast toast-danger"><span>Không gửi được tin nhắn cho khách Thư.</span><button class="btn btn-ghost btn-sm">Thử lại</button></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const styles = getComputedStyle(document.documentElement);
+    const read = (token) => styles.getPropertyValue(`--${token}`).trim();
+    document.querySelectorAll('.swatch[data-token]').forEach((el) => {
+      const token = el.dataset.token;
+      el.innerHTML = `<div class="chip" style="background: var(--${token})"></div><span class="name">${token.replace('color-', '')}</span><span class="value">${read(token)}</span>`;
+    });
+    document.querySelectorAll('[data-value]').forEach((el) => { el.textContent = read(el.dataset.value); });
+  </script>
+</body>
+</html>
