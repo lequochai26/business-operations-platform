@@ -7,3 +7,5 @@ decision-log
 detailed-design
 ui-design
 component-design
+test-case-design
+design-review
