@@ -336,6 +336,7 @@ Mỗi skill được mô tả theo: mục đích, lệnh gọi, điều kiện t
 - **Input:** nhu cầu từ `ui-design`, `ui-style.md`, `ui-tokens.css`, `components/index.md`.
 - **Output:**
   - `components/<tên>.md`: mục đích, cấu tạo, thuộc tính và biến thể, trạng thái, hành vi, nên/không nên dùng, **màn hình đang dùng**;
+  - `components/<tên>.js`: Web Component, là phần được mockup màn hình nhúng vào;
   - `components/<tên>.html`: mockup mọi biến thể và trạng thái;
   - cập nhật `components/index.md`.
 - Khi sửa component: liệt kê màn hình bị ảnh hưởng từ danh sách "màn hình đang dùng", chụp lại ảnh.
@@ -609,9 +610,11 @@ Mỗi case gồm:
 - **Excel:** Python (`py`, đã có 3.15) + `openpyxl`, nhúng ảnh evidence.
 - **PDF:** mẫu HTML + Playwright (Chromium) in PDF. Không phụ thuộc Excel hay LibreOffice.
 - **OpenAPI:** sinh từ `api/*.md`, kiểm tra bằng Redocly CLI.
-- **Mockup:** HTML tĩnh + `ui-tokens.css`, chụp bằng Playwright ở khung 1440×900 (thêm 390×844 khi làm responsive).
+- **Mockup:** HTML tĩnh + `ui-tokens.css`, mỗi trạng thái một file HTML, chụp bằng Playwright ở khung 1440×900 (thêm 390×844 khi làm responsive).
+- **Component:** Web Component thuần (`components/<tên>.js`); mockup nhúng bằng `<script src>` + thẻ custom element, nên mở được trực tiếp bằng `file://` và sửa component thì mọi mockup đổi theo.
+- **Token:** `ui-style.md` có một khối YAML dưới heading `## Tokens`; script sinh `ui-tokens.css` từ khối này (sau này sinh được token cho app native).
 - **Manual test do Claude chạy:** Playwright cho trình duyệt; lệnh SQL cho DB.
-- Script đặt trong `scripts/` của skill dùng nó.
+- Script chỉ một skill dùng thì đặt trong `scripts/` của skill đó; script dùng chung (sinh token, chụp mockup, kiểm tra skill) đặt ở `tools/`.
 
 ---
 
