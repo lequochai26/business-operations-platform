@@ -2,3 +2,5 @@ conventions-init
 test-viewpoints-init
 ui-style-init
 ui-style-update
+phase-kickoff
+decision-log
