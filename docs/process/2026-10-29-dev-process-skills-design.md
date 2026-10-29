@@ -16,7 +16,7 @@
   - API: Markdown là nguồn chính, OpenAPI được sinh ra từ Markdown;
   - style UI, component dùng chung, mockup màn hình.
 - Tài liệu của từng giai đoạn nằm ở `docs/phases/phase-N/`.
-- Manual test bao gồm mọi thứ con người làm được bằng tay qua trình duyệt, DB, cookie, Facebook và thiết bị. Test case được thiết kế bài bản (bảng khía cạnh test + kỹ thuật thiết kế test), có evidence, xuất Markdown → Excel → PDF.
+- Manual test bao gồm mọi thứ con người làm được bằng tay qua trình duyệt, DB, cookie, Facebook và thiết bị. Test case được thiết kế bài bản (bảng khía cạnh test + kỹ thuật thiết kế test), có evidence. Báo cáo quản lý bằng Markdown, xuất ra Excel và PDF (qua mẫu HTML).
 - **Đợt 1** gồm 19 skill và 1 command:
   - **Khởi tạo:** `conventions-init`, `ui-style-init`, `ui-style-update`, `test-viewpoints-init`.
   - **Thiết kế:** `phase-kickoff`, `detailed-design`, `ui-design`, `component-design`, `test-case-design`, `design-review`, `decision-log`.
@@ -253,9 +253,9 @@ Mỗi skill được mô tả theo: mục đích, lệnh gọi, điều kiện t
 #### `ui-style-init`
 - **Mục đích:** chốt style UI cho toàn hệ thống.
 - **Lệnh:** `/ui-style-init`
-- **Input:** `docs/story/BusinessContext.md` mục 2 (màu, font của tiệm), yêu cầu ưu tiên điện thoại (`07-screens-and-settings.md`).
+- **Input:** `docs/story/BusinessContext.md` mục 2 (màu, font của tiệm), lộ trình nền tảng ở mục 13 (web máy tính trước → responsive → app native).
 - **Output:**
-  - `docs/design/ui-style.md` (nguồn chính): bảng màu và ý nghĩa, font, thang cỡ chữ, khoảng cách, bo góc, đổ bóng, icon, quy ước component cơ bản (nút, ô nhập, thẻ, thông báo, badge), trạng thái tương tác, khả năng truy cập (độ tương phản, cỡ vùng chạm);
+  - `docs/design/ui-style.md` (nguồn chính): bảng màu và ý nghĩa, font, thang cỡ chữ, khoảng cách, bo góc, đổ bóng, icon, lưới bố cục và **breakpoint** (định nghĩa sẵn cho responsive về sau), quy ước component cơ bản (nút, ô nhập, thẻ, thông báo, badge), trạng thái tương tác, khả năng truy cập (độ tương phản, cỡ vùng chạm). Giá trị token viết độc lập với nền tảng để sau này sinh được token cho app native;
   - `docs/design/ui-tokens.css`: biến CSS sinh từ `ui-style.md`;
   - `docs/design/ui-style-preview.html` và ảnh chụp: trưng bày mọi component cơ bản.
 - **Điểm dừng:** người dùng duyệt style.
@@ -317,10 +317,10 @@ Mỗi skill được mô tả theo: mục đích, lệnh gọi, điều kiện t
 - **Điều kiện tiên quyết:** thiết kế chi tiết đã duyệt, đã có `ui-style.md`.
 - **Input:** như mục 3.1 bước 3.
 - **Output:** `docs/design/ui/<màn hình>/`:
-  - `index.html`: mockup ở khung điện thoại 390×844, dùng `ui-tokens.css`, **nhúng** HTML của component thay vì chép code;
+  - `index.html`: mockup ở khung máy tính 1440×900, dùng `ui-tokens.css`, **nhúng** HTML của component thay vì chép code. Khi tới giai đoạn responsive thì bổ sung khung điện thoại 390×844;
   - ảnh chụp từng trạng thái: bình thường, trống, đang tải, lỗi nhập, lỗi hệ thống, không có quyền;
   - `notes.md`: luồng thao tác, component dùng, chỗ khác với thiết kế chi tiết.
-- Có thể đăng mockup thành link riêng tư để duyệt trên điện thoại.
+- Có thể đăng mockup thành link riêng tư để chủ tiệm xem và góp ý.
 - **Điểm dừng:** người dùng duyệt mockup.
 - **Gọi:** `component-design`, `decision-log`.
 
@@ -450,7 +450,7 @@ Mỗi skill được mô tả theo: mục đích, lệnh gọi, điều kiện t
 - **Output:**
   - `acceptance/report.md`: tổng quan, đối chiếu từng tiêu chí "Xong khi", thống kê case, lỗi còn mở, số liệu chạy thật, phần ký nghiệm thu;
   - `report.xlsx`: sheet "Tổng hợp", sheet "Danh sách case", mỗi case có evidence một sheet và ảnh được nhúng;
-  - `report.pdf`: xuất từ `report.xlsx`.
+  - `report.pdf`: render `report.md` qua mẫu HTML (`templates/report.html`) rồi in PDF bằng Playwright, ảnh evidence nhúng theo từng case.
 - **Điểm dừng:** chủ tiệm ký nghiệm thu; `status.md` ghi ngày nghiệm thu.
 
 ### 5.5 Command `/phase-status`
@@ -514,7 +514,7 @@ chưa bắt đầu → thiết kế chi tiết → UI (bỏ qua nếu không có
 
 ### 8.2 Bảng khía cạnh test (`viewpoints.md`)
 Ít nhất gồm:
-- hiển thị (đúng mockup, đúng dữ liệu, chữ tiếng Việt, khung điện thoại);
+- hiển thị (đúng mockup, đúng dữ liệu, chữ tiếng Việt, các kích thước cửa sổ);
 - kiểm tra dữ liệu nhập;
 - logic nghiệp vụ;
 - chuyển trạng thái (hợp lệ và không hợp lệ);
@@ -540,7 +540,7 @@ chưa bắt đầu → thiết kế chi tiết → UI (bỏ qua nếu không có
 6. Gắn cờ regression cho case cốt lõi.
 
 ### 8.4 Các nhóm thao tác tay
-- **Trình duyệt:** bấm gửi hai lần, Back, tải lại giữa chừng, hai tab cùng sửa, mất mạng, khung điện thoại và máy tính.
+- **Trình duyệt:** bấm gửi hai lần, Back, tải lại giữa chừng, hai tab cùng sửa, mất mạng, thu nhỏ cửa sổ.
 - **Cookie và phiên:** xóa cookie, phiên hết hạn, dùng phiên vai trò Thợ vào URL của Quản lý.
 - **DB:** sửa thời điểm để giả lập thời gian trôi qua, đặt dữ liệu về trạng thái lạ, xóa bản ghi liên quan.
 - **Facebook:** xóa bài trước khi app comment, tắt comment, rời group, đăng xuất tài khoản vận hành, người thật trả lời khách từ Page.
@@ -585,9 +585,9 @@ Mỗi case gồm:
 ## 10. Công cụ
 
 - **Excel:** Python (`py`, đã có 3.15) + `openpyxl`, nhúng ảnh evidence.
-- **PDF:** xuất từ `report.xlsx` qua Excel COM (`ExportAsFixedFormat`) trên Excel 2007 sẵn có. Cần kiểm chứng Excel đã có SP2. Dự phòng: cài LibreOffice và chuyển bằng chế độ không giao diện.
+- **PDF:** mẫu HTML + Playwright (Chromium) in PDF. Không phụ thuộc Excel hay LibreOffice.
 - **OpenAPI:** sinh từ `api/*.md`, kiểm tra bằng Redocly CLI.
-- **Mockup:** HTML tĩnh + `ui-tokens.css`, chụp bằng Playwright ở khung 390×844.
+- **Mockup:** HTML tĩnh + `ui-tokens.css`, chụp bằng Playwright ở khung 1440×900 (thêm 390×844 khi làm responsive).
 - **Manual test do Claude chạy:** Playwright cho trình duyệt; lệnh SQL cho DB.
 - Script đặt trong `scripts/` của skill dùng nó.
 
@@ -619,7 +619,11 @@ Mỗi case gồm:
 ## 13. Quyết định và giả định trong tài liệu này
 - Chọn hướng bộ skill độc lập, không dùng superpowers (người dùng chọn).
 - Evidence không che, không commit; người dùng tự xóa sau khi xác nhận (người dùng chốt). Phần không commit gồm cả `report.xlsx` và `report.pdf` vì có nhúng ảnh (giả định của người viết).
-- PDF xuất qua Excel 2007 COM (giả định, cần kiểm chứng).
-- Khung mockup 390×844 (giả định, theo kích thước iPhone phổ biến).
+- PDF xuất từ mẫu HTML bằng Playwright, song song với Excel; cả hai cùng sinh từ `report.md` (người dùng chốt).
+- **Lộ trình nền tảng UI** (người dùng chốt): trước mắt là web tối ưu cho máy tính; tiếp theo là responsive cho điện thoại; sau này là app native. Hệ quả:
+  - mockup vẽ ở khung 1440×900 (giả định kích thước);
+  - `ui-style.md` định nghĩa sẵn breakpoint và token độc lập nền tảng;
+  - API giữ sạch, đầy đủ trong `openapi.yaml` để app native dùng lại.
+- **Cần cập nhật tài liệu khái quát:** `docs/project/02-features/07-screens-and-settings.md` và `05-roadmap.md` đang ghi "ưu tiên điện thoại", PWA và web push. Việc này làm bằng `/change-request` sau khi có bộ skill, và phải xem lại kênh thông báo cho chủ tiệm (dùng iPhone).
 - `/phase-status` là command chỉ đọc, không ghi file.
 - Lần chạy thử bộ skill dùng tính năng `group-settings` của GĐ0.
