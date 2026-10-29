@@ -1,1 +1,7 @@
 poc/
+docs/phases/*/test/runs/*/evidence/
+docs/phases/*/acceptance/*.xlsx
+docs/phases/*/acceptance/*.pdf
+.local/
+__pycache__/
+.pytest_cache/
