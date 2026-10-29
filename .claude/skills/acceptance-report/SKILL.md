@@ -45,7 +45,8 @@ Sau bước 5: chờ chủ tiệm ký nghiệm thu (đồng ý hoặc không, k�
 
 - Mọi tiêu chí "Xong khi" có kết luận và bằng chứng.
 - Số liệu trong `report.md` khớp sheet "Tổng hợp".
-- Mọi vấn đề `mở`/`đang xử lý` trong `issues.md` có trong mục `## Vấn đề còn mở`.
+- Mọi vấn đề `mở`/`đang xử lý`/`chờ test lại` trong `issues.md` có trong mục `## Vấn đề còn mở`.
+- Case `chưa chạy` (sheet "Tổng hợp") bằng 0, hoặc từng case chưa chạy có lý do được người dùng chấp nhận trong `report.md`.
 - `git status` không có `report.xlsx`, `report.pdf`, `evidence/` chờ commit.
 
 ## Cập nhật status.md

@@ -32,8 +32,8 @@ Hiện thực đúng một task của `docs/phases/phase-N/plan.md`, có test v�
 4. Chạy lệnh test, typecheck, lint trong `## Quy ước`. Mọi lệnh phải sạch.
 5. Tự review bằng `.claude/skills/review-code/checklists/review-code.md`; sửa chỗ không đạt (theo `tdd` nếu là hành vi).
 6. Kiểm tra `- Tiêu chí xong:` bằng đúng lệnh/quan sát ghi trong task.
-7. Commit theo quy ước commit message.
-8. Đặt `- Trạng thái: xong` cho task. Nếu mọi task của tính năng đã xong: trạng thái tính năng `đã code`.
+7. **Trước khi commit**: đặt `- Trạng thái: xong` cho task trong `plan.md`; nếu mọi task của tính năng đã xong, đặt trạng thái tính năng `đã code` trong `status.md`.
+8. Commit code, test, `plan.md` và `status.md` trong cùng một commit theo quy ước commit message. Cây làm việc phải sạch sau commit.
 
 ## Điểm dừng
 

@@ -141,6 +141,70 @@ def test_build_pdf_missing_evidence_warns(phase_dir):
     assert out.exists()
 
 
+def test_build_xlsx_non_image_evidence_listed(phase_dir):
+    run_dir = write_run(phase_dir, "2026-11-10-01", one_case("2026-11-10-01", "P0-GRP-012", "đạt", "log.txt"))
+    (run_dir / "evidence" / "log.txt").write_text("job ok", encoding="utf-8")
+    out = phase_dir / "acceptance" / "report.xlsx"
+    assert build_xlsx(phase_dir, collect_runs(phase_dir), out) == []
+    ws = openpyxl.load_workbook(out)["P0-GRP-012"]
+    values = [c for row in ws.iter_rows(values_only=True) for c in row if c]
+    assert "log.txt (file đính kèm, không nhúng)" in values
+    assert ws._images == []
+
+
+def test_build_xlsx_corrupt_image_warns(phase_dir):
+    run_dir = write_run(phase_dir, "2026-11-10-01", one_case("2026-11-10-01", "P0-GRP-012", "đạt", "bad.png"))
+    (run_dir / "evidence" / "bad.png").write_bytes(b"not an image")
+    out = phase_dir / "acceptance" / "report.xlsx"
+    warnings = build_xlsx(phase_dir, collect_runs(phase_dir), out)
+    assert any("bad.png" in w for w in warnings)
+    assert out.exists()
+
+
+def test_build_pdf_non_image_evidence(phase_dir):
+    run_dir = write_run(phase_dir, "2026-11-10-01", one_case("2026-11-10-01", "P0-GRP-012", "đạt", "log.txt"))
+    (run_dir / "evidence" / "log.txt").write_text("job ok", encoding="utf-8")
+    out = phase_dir / "acceptance" / "report.pdf"
+    assert build_pdf(phase_dir, collect_runs(phase_dir), out) == []
+    assert out.read_bytes()[:4] == b"%PDF"
+
+
+def write_cases(phase_dir, body):
+    cases_dir = phase_dir / "test" / "cases"
+    cases_dir.mkdir(parents=True, exist_ok=True)
+    (cases_dir / "group-settings.md").write_text(body, encoding="utf-8")
+
+
+def test_build_xlsx_counts_not_run_cases(phase_dir):
+    write_cases(phase_dir, "# Test case\n\n## P0-GRP-012 Đã chạy\n- Thiết kế: R-GRP-04\n\n## P0-GRP-013 Chưa chạy\n- Thiết kế: R-GRP-04\n")
+    write_run(phase_dir, "2026-11-10-01", one_case("2026-11-10-01", "P0-GRP-012", "đạt"))
+    out = phase_dir / "acceptance" / "report.xlsx"
+    build_xlsx(phase_dir, collect_runs(phase_dir), out)
+    wb = openpyxl.load_workbook(out)
+    summary = {r[0]: r[1] for r in wb["Tổng hợp"].iter_rows(values_only=True) if r[0]}
+    assert summary["chưa chạy"] == 1
+    listing = [r for r in wb["Danh sách case"].iter_rows(values_only=True)]
+    assert ("P0-GRP-013", "Chưa chạy", "chưa chạy") in [r[:3] for r in listing]
+
+
+def test_not_run_excludes_retired_cases(phase_dir):
+    write_cases(phase_dir, "## P0-GRP-012 Đã chạy\n- Thiết kế: R-GRP-04\n\n## P0-GRP-014 Bỏ\n- Đã bỏ: 2026-11-12, quy tắc R-GRP-04 đã đổi\n")
+    write_run(phase_dir, "2026-11-10-01", one_case("2026-11-10-01", "P0-GRP-012", "đạt"))
+    out = phase_dir / "acceptance" / "report.xlsx"
+    build_xlsx(phase_dir, collect_runs(phase_dir), out)
+    summary = {r[0]: r[1] for r in openpyxl.load_workbook(out)["Tổng hợp"].iter_rows(values_only=True) if r[0]}
+    assert summary["chưa chạy"] == 0
+
+
+def test_open_issues_include_retest_pending(phase_dir):
+    (phase_dir / "issues.md").write_text("## P0-ISS-003 A\n- Trạng thái: chờ test lại\n\n## P0-ISS-004 B\n- Trạng thái: đã xong\n", encoding="utf-8")
+    write_run(phase_dir, "2026-11-10-01", one_case("2026-11-10-01", "P0-GRP-012", "đạt"))
+    out = phase_dir / "acceptance" / "report.xlsx"
+    build_xlsx(phase_dir, collect_runs(phase_dir), out)
+    summary = {r[0]: r[1] for r in openpyxl.load_workbook(out)["Tổng hợp"].iter_rows(values_only=True) if r[0]}
+    assert summary["Vấn đề còn mở"] == 1
+
+
 def test_main_reports_locked_output(phase_dir, monkeypatch, capsys):
     write_run(phase_dir, "2026-11-10-01", one_case("2026-11-10-01", "P0-GRP-012", "đạt"))
 

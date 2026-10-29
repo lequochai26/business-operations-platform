@@ -33,8 +33,9 @@ Sửa đúng nguyên nhân gốc của lỗi, có test chứng minh lỗi đã h
 6. Tìm nguyên nhân gốc: lần ngược từ triệu chứng tới chỗ dữ liệu/hành vi sai đầu tiên. Không sửa triệu chứng.
 7. Gọi `tdd`: test tự động tái hiện đúng lỗi, thấy thất bại → sửa → pass → chạy toàn bộ test.
 8. Gắn `- Regression: có` cho case liên quan trong file test case.
-9. Commit. Cập nhật mục vấn đề: `- Trạng thái: đã xong`, `- Xử lý: <commit>, test <tên test>`. **Không sửa** `results.md` của lần chạy cũ; kết quả mới ghi ở lần test lại.
-10. Merge theo `/review-code` như mọi thay đổi code.
+9. Cập nhật mục vấn đề **trước khi commit**: `- Trạng thái: chờ test lại`, `- Xử lý: <tên test>, nhánh <tên nhánh>`. **Không sửa** `results.md` của lần chạy cũ; kết quả mới ghi ở lần test lại (`manual-test-run` đặt `đã xong` khi case đạt).
+10. Commit code, test, file test case và `issues.md` trong cùng một commit.
+11. Merge theo `/review-code` như mọi thay đổi code.
 
 ## Điểm dừng
 
@@ -44,7 +45,7 @@ Sửa đúng nguyên nhân gốc của lỗi, có test chứng minh lỗi đã h
 ## Output
 
 - Test tự động tái hiện lỗi, code sửa, commit.
-- Case gắn cờ regression; mục `issues.md` đã cập nhật.
+- Case gắn cờ regression; mục `issues.md` ở trạng thái `chờ test lại`.
 
 ## Tự kiểm tra
 

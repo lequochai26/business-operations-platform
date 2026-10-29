@@ -13,7 +13,7 @@ Chạy manual test có evidence, ghi kết quả theo định dạng cố địn
 ## Điều kiện tiên quyết
 
 - `<slug>`: tính năng ở trạng thái `đã code` hoặc `đang manual test`, code đã merge (hoặc người dùng chỉ định nhánh).
-- `--retest <mã case>`: case có kết quả `không đạt` hoặc `bị chặn` ở lần chạy trước, và vấn đề liên quan đã `đã xong` (thường sau `bug-fix`).
+- `--retest <mã case>`: case có kết quả `không đạt` hoặc `bị chặn` ở lần chạy trước, và vấn đề liên quan ở trạng thái `chờ test lại` (do `bug-fix` đặt sau khi sửa).
 - `--regression`: chạy mọi case có `- Regression: có` của giai đoạn.
 - Có file case `docs/phases/phase-N/test/cases/<slug>.md`.
 
@@ -27,15 +27,17 @@ Chạy manual test có evidence, ghi kết quả theo định dạng cố địn
 
 ## Các bước
 
-1. Xác định danh sách case. Hỏi môi trường và URL. Đặt tính năng `đang manual test` (nếu đang `đã code`).
+1. Xác định danh sách case (bỏ qua case có dòng `- Đã bỏ:`). Hỏi môi trường và URL. Đặt tính năng `đang manual test` (nếu đang `đã code`).
 2. Tạo `docs/phases/phase-N/test/runs/<YYYY-MM-DD-NN>/` (NN tăng dần trong ngày) và thư mục `evidence/` bên trong. Viết phần đầu `results.md` theo `templates/results.md`.
 3. Với từng case, theo thứ tự trong file:
    - **Claude làm**: thực hiện từng bước bằng Playwright (trình duyệt), lệnh SQL (DB), sửa cookie; tại bước `[evidence]` chụp ảnh vào `evidence/` tên `<mã case>_<bước 2 chữ số>_<mô tả ngắn tiếng Anh>.png`; so kết quả với mong đợi.
    - **Người làm**: in từng bước và kết quả mong đợi; chờ người dùng làm và gửi ảnh + kết quả; lưu ảnh vào `evidence/` đúng quy tắc tên.
    - Ghi mục case vào `results.md` ngay sau khi xong case đó (không đợi cuối), đúng định dạng mẫu; `- Kết quả:` chỉ dùng `đạt`, `không đạt`, `bị chặn`, `bỏ qua`.
-   - Case `không đạt`: tạo mục trong `docs/phases/phase-N/issues.md` theo `.claude/skills/feedback/templates/issues.md` (`- Nguồn: manual test <mã lần chạy>`, `- Phân loại: bug` hoặc theo đối chiếu thiết kế), điền mã vào `- Vấn đề:`.
+   - Case `không đạt` (lần chạy thường, không phải test lại): tạo mục trong `docs/phases/phase-N/issues.md` theo `.claude/skills/feedback/templates/issues.md` (`- Nguồn: manual test <mã lần chạy>`, `- Phân loại: bug` hoặc theo đối chiếu thiết kế), điền mã vào `- Vấn đề:`.
    - Người dùng phản hồi giữa chừng điều không nằm trong case: chuyển qua `feedback`.
-4. Test lại: lần chạy mới chỉ chứa các case chạy lại; không sửa `results.md` cũ. Case đạt khi test lại: cập nhật mục vấn đề (`- Xử lý:` thêm "đạt ở lần chạy <mã>").
+4. Test lại: lần chạy mới chỉ chứa các case chạy lại; không sửa `results.md` cũ. Với vấn đề `chờ test lại` của case:
+   - case **đạt**: vấn đề → `đã xong`, `- Xử lý:` thêm "đạt ở lần chạy <mã>";
+   - case **không đạt**: **mở lại vấn đề cũ** (→ `mở`, `- Xử lý:` thêm "vẫn lỗi ở lần chạy <mã>: <thực tế>"), điền mã vấn đề cũ vào `- Vấn đề:`; **không** tạo vấn đề mới.
 5. Tổng kết: số case theo kết quả, danh sách vấn đề mới.
 
 ## Điểm dừng

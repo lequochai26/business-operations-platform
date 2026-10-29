@@ -15,7 +15,7 @@
 ## Thống kê test case
 
 - Tổng: <n> case, <m> lần chạy
-- Đạt: <a> · Không đạt: <b> · Bị chặn: <c> · Bỏ qua: <d>
+- Đạt: <a> · Không đạt: <b> · Bị chặn: <c> · Bỏ qua: <d> · Chưa chạy: <e> (không tính case `Đã bỏ`)
 - Theo tính năng: <slug>: <a>/<n> đạt; …
 - Truy vết: <x>/<y> quy tắc trong `traceability.md` có case đạt
 

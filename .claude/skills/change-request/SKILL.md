@@ -30,7 +30,7 @@ argument-hint: "<nội dung thay đổi>"
    1. `docs/project/` (nếu thay đổi yêu cầu khái quát);
    2. thiết kế tính năng (ghi `## Lịch sử thay đổi`, thêm/sửa `R-…`; không tái sử dụng mã đã xóa);
    3. `docs/design/`: `db-schema.md`, `api/*.md` rồi sinh lại `openapi.yaml` và lint như `detailed-design`; style qua `ui-style-update`; component qua `component-design`; mockup như `ui-design`;
-   4. test case và `traceability.md` (case cũ không còn đúng: sửa hoặc đánh dấu `Đã bỏ: <ngày, lý do>`, không xóa);
+   4. test case và `traceability.md` (case cũ không còn đúng: sửa, hoặc thêm dòng `- Đã bỏ: <YYYY-MM-DD>, <lý do>` ngay dưới heading của case, không xóa);
    5. `plan.md`: thêm task mới (đánh số tiếp) cho phần code cần đổi;
    6. code và test: làm qua `/implement-task` với task mới, không sửa trực tiếp ở đây.
 5. Lùi trạng thái tính năng trong `status.md` về bước sớm nhất bị ảnh hưởng (ví dụ đổi quy tắc kiểm tra dữ liệu → `thiết kế chi tiết`; chỉ thêm case → `test case`).

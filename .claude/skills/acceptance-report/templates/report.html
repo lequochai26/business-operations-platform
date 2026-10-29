@@ -26,6 +26,9 @@
     {% for c in cases %}
     <tr><td>{{ c.case_id }}</td><td>{{ c.title }}</td><td>{{ c.result }}</td><td>{{ c.run_id }}</td><td>{{ c.issue }}</td></tr>
     {% endfor %}
+    {% for c in not_run %}
+    <tr><td>{{ c.case_id }}</td><td>{{ c.title }}</td><td class="result-khac">chưa chạy</td><td></td><td></td></tr>
+    {% endfor %}
   </table>
 
   {% for c in cases %}
@@ -35,7 +38,9 @@
     {% if c.actual %}<p>Thực tế: {{ c.actual }}</p>{% endif %}
     {% if c.note %}<p>Ghi chú: {{ c.note }}</p>{% endif %}
     {% for e in c.evidence %}
-      {% if e.uri %}<p>{{ e.name }}</p><img src="{{ e.uri }}">{% else %}<p class="missing">Thiếu file evidence: {{ e.name }}</p>{% endif %}
+      {% if e.kind == 'image' %}<p>{{ e.name }}</p><img src="{{ e.uri }}">
+      {% elif e.kind == 'file' %}<p>{{ e.name }} (file đính kèm, không nhúng)</p>
+      {% else %}<p class="missing">Thiếu file evidence: {{ e.name }}</p>{% endif %}
     {% endfor %}
   </section>
   {% endfor %}

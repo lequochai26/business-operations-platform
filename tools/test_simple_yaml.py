@@ -31,6 +31,16 @@ def test_hash_inside_quotes_kept():
     assert parse("a: '#fff'") == {"a": "#fff"}
 
 
+def test_unquoted_hash_value_without_children_raises():
+    with pytest.raises(ValueError, match="dòng 1"):
+        parse("primary: #4E6045\nradius: 8px")
+
+
+def test_empty_value_at_end_raises():
+    with pytest.raises(ValueError, match="dòng 2"):
+        parse("a: 1\nprimary: #4E6045")
+
+
 def test_bad_indentation_raises():
     with pytest.raises(ValueError, match="dòng 2"):
         parse("a: 1\n   b: 2")

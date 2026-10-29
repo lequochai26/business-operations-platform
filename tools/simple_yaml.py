@@ -25,8 +25,8 @@ def _scalar(value: str) -> str:
 
 def parse(text: str) -> dict:
     root: dict = {}
-    # Mỗi frame: [thụt lề của các khóa (None = chưa biết), mapping, thụt lề của khóa cha]
-    frames: list[list] = [[0, root, -1]]
+    # Mỗi frame: [thụt lề của các khóa (None = chưa biết), mapping, thụt lề của khóa cha, dòng của khóa cha]
+    frames: list[list] = [[0, root, -1, 0]]
     for lineno, raw in enumerate(text.splitlines(), start=1):
         line = _strip_comment(raw).rstrip()
         if not line.strip():
@@ -38,8 +38,7 @@ def parse(text: str) -> dict:
                 if indent > top[2]:
                     top[0] = indent
                     break
-                frames.pop()
-                continue
+                _raise_empty(top[3])
             if indent == top[0]:
                 break
             if indent < top[0] and len(frames) > 1:
@@ -54,5 +53,11 @@ def parse(text: str) -> dict:
         else:
             child: dict = {}
             frames[-1][1][key.strip()] = child
-            frames.append([None, child, indent])
+            frames.append([None, child, indent, lineno])
+    if frames[-1][0] is None:
+        _raise_empty(frames[-1][3])
     return root
+
+
+def _raise_empty(lineno: int) -> None:
+    raise ValueError(f"Khóa ở dòng {lineno} không có giá trị và không có khóa con (giá trị bắt đầu bằng # phải đặt trong dấu nháy)")

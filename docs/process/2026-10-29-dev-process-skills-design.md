@@ -462,7 +462,7 @@ Mỗi skill được mô tả theo: mục đích, lệnh gọi, điều kiện t
   - **thiếu test case:** tình huống chưa có case → bổ sung case vào file test case và `traceability.md`;
   - **câu hỏi hoặc hiểu nhầm:** trả lời, dẫn chứng từ thiết kế.
 - **Điểm dừng:** trình bày cách phân loại và hướng xử lý, chờ người dùng xác nhận rồi mới chuyển skill.
-- **Output:** mục mới trong `phase-N/issues.md`: mã, ngày, nội dung, phân loại, tính năng, tên file evidence, trạng thái (mở / đang xử lý / đã xong / không sửa kèm lý do), liên kết tới cách xử lý (commit, phiên bản thiết kế, case mới).
+- **Output:** mục mới trong `phase-N/issues.md`: mã, ngày, nội dung, phân loại, tính năng, tên file evidence, trạng thái (mở / đang xử lý / chờ test lại / đã xong / không sửa kèm lý do), liên kết tới cách xử lý (commit, phiên bản thiết kế, case mới).
 - **Gọi:** `bug-fix`, `change-request`.
 
 #### `acceptance-report`

@@ -19,3 +19,8 @@
 - Các bước:
   1. <thao tác> → <kết quả mong đợi>
   2. <thao tác> → <kết quả mong đợi> [evidence]
+
+<!-- Case không còn đúng sau change-request: không xóa, thêm dòng ngay dưới heading:
+- Đã bỏ: <YYYY-MM-DD>, <lý do>
+Case có dòng này không được chạy và không tính vào báo cáo. -->
+
