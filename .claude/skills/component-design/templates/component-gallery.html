@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>[TênComponent] – gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../ui-tokens.css">
+  <script src="<ten-component>.js"></script>
+  <style>
+    body { margin: 0; padding: var(--space-xl); background: var(--color-surface-page); font-family: var(--font-family-body); color: var(--color-text-default); }
+    h1 { font-size: var(--font-size-xl); }
+    .grid { display: grid; grid-template-columns: 200px 1fr; gap: var(--space-md); align-items: center; }
+    .label { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+  </style>
+</head>
+<body>
+  <h1>[TênComponent]</h1>
+  <!-- Mỗi dòng: một tổ hợp biến thể × trạng thái -->
+  <div class="grid">
+    <span class="label">variant=pending</span><mio-ten-component variant="pending"></mio-ten-component>
+    <span class="label">variant=pending, state=disabled</span><mio-ten-component variant="pending" state="disabled"></mio-ten-component>
+  </div>
+</body>
+</html>

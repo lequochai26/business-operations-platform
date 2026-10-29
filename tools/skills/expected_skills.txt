@@ -5,3 +5,5 @@ ui-style-update
 phase-kickoff
 decision-log
 detailed-design
+ui-design
+component-design

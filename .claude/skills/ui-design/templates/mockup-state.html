@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <!-- Mockup <màn hình> – trạng thái <trạng thái>. Khung chuẩn 1440×900. -->
+  <title>[Màn hình] – [trạng thái]</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../ui-tokens.css">
+  <!-- Nhúng component dùng chung, không chép code: -->
+  <script src="../../components/<ten-component>.js"></script>
+  <style>
+    body { margin: 0; min-height: 900px; display: grid; grid-template-columns: 240px 1fr; background: var(--color-surface-page); color: var(--color-text-default); font-family: var(--font-family-body); font-size: var(--font-size-md); }
+    nav { background: var(--color-brand-primary-strong); color: var(--color-text-on-primary); padding: var(--space-lg) var(--space-md); }
+    main { padding: var(--space-xl); max-width: 1200px; }
+    h1 { font-family: var(--font-family-heading); font-size: var(--font-size-xxl); margin: 0 0 var(--space-lg); }
+  </style>
+</head>
+<body>
+  <nav>Tiệm Nhà Mio</nav>
+  <main>
+    <h1>[Tiêu đề màn hình]</h1>
+    <!-- Nội dung màn hình ở trạng thái này. Dùng dữ liệu mẫu thực tế, tiếng Việt có dấu. -->
+    <mio-ten-component variant="pending"></mio-ten-component>
+  </main>
+</body>
+</html>
