@@ -85,3 +85,13 @@ def test_html_tooltip_for_gloss_with_double_quotes(tmp_path):
     reader.write_text('Xem [R-AUT-32](x.md#s-a "Bấm \'Đăng xuất\'") *(Bấm "Đăng xuất")*.\n', encoding="utf-8")
     render_site(docs, set())
     assert "<em>" not in page_html(docs)
+
+
+def test_html_keeps_angle_placeholders_outside_code(tmp_path):
+    docs, reader = make_reader(tmp_path)
+    reader.write_text('<a id="s-0123456789"></a>\n\nThông báo "Thử lại sau <n> phút." và `<api>/x`.\n', encoding="utf-8")
+    render_site(docs, set())
+    html = page_html(docs)
+    assert "Thử lại sau &lt;n&gt; phút." in html
+    assert "<code>&lt;api&gt;/x</code>" in html
+    assert '<a id="s-0123456789"></a>' in html

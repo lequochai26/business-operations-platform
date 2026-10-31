@@ -67,6 +67,24 @@ def _widen_list_indent(text: str) -> str:
     return "\n".join(lines)
 
 
+ANCHOR_LINE = re.compile(r'^<a id="s-[0-9a-f]+"></a>$')
+CODE_SPAN = re.compile(r"(`[^`\n]*`)")
+
+
+def _escape_placeholders(text: str) -> str:
+    """`<n>`, `<tên>`… ngoài đoạn code bị Markdown hiểu là thẻ HTML và mất đi; đổi `<` thành `&lt;` (trừ dòng anchor)."""
+    lines, in_fence = [], False
+    for line in text.split("\n"):
+        if line.lstrip().startswith("```"):
+            in_fence = not in_fence
+        if in_fence or ANCHOR_LINE.match(line):
+            lines.append(line)
+            continue
+        parts = CODE_SPAN.split(line)
+        lines.append("".join(p if i % 2 else re.sub(r"(?<!\\)<", "&lt;", p) for i, p in enumerate(parts)))
+    return "\n".join(lines)
+
+
 def _title(text: str, fallback: str) -> str:
     match = re.search(r"^#{1,3} (.+)$", text, re.MULTILINE)
     return match.group(1).strip() if match else fallback
@@ -78,7 +96,7 @@ def render_site(docs_root: Path, stale_readers: set[Path]) -> list[Path]:
     css = docs_root / "design" / "ui-tokens.css"
     for md_path in pages:
         text = read_text(md_path)
-        content = markdown.markdown(_widen_list_indent(text), extensions=["tables", "fenced_code"])
+        content = markdown.markdown(_escape_placeholders(_widen_list_indent(text)), extensions=["tables", "fenced_code"])
         content = INLINE_GLOSS.sub(_drop_inline_gloss, content)
         content = MD_HREF.sub(lambda m: f'href="{m.group(1)}.html{m.group(2) or ""}"', content)
         if md_path in stale_readers:
