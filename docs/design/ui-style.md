@@ -176,8 +176,26 @@ breakpoint:
 - **Thông báo:**
   - banner trong trang: nền `color-status-soft-*`, chữ `color-status-text-*`, vạch trái `border-width-accent` màu `color-status-*`;
   - toast: góc dưới phải, nền thẻ, bóng `shadow-overlay`, vạch trái như banner; tự ẩn sau vài giây trừ loại danger.
+  - Đặt ở đâu: mục "Vị trí thông báo".
 - **Badge:** nền `color-status-soft-*`, chữ `color-status-text-*`, bo `radius-pill`. Nhóm: success (đã xong, đang chạy), warning (chờ duyệt, chờ thợ), danger (thất bại, bị dừng), info (loại bài, đã nhắc), neutral (khung bận, bỏ qua).
 - **Thanh tiến độ:** rãnh `color-surface-divider`, phần đã dùng `color-brand-primary`; gần chạm giới hạn (≥ 90%) đổi sang `color-status-warning`. Luôn kèm số "18 / 40".
+
+## Vị trí thông báo
+
+Quy ước chung cho mọi màn hình (ADR `0016-form-message-placement`). Mockup minh họa trong `ui-style-preview.html` mục "Vị trí thông báo".
+
+- **Lỗi theo trường:** ngay dưới ô, thay chỗ gợi ý (mục Ô nhập).
+- **Thông báo cấp form** (kết quả gửi form không gắn với một trường: lỗi nghiệp vụ, bị khóa, lỗi hệ thống, mất mạng; thông báo info khi vừa chuyển tới trang):
+  - một **vùng thông báo** duy nhất, ngay sau trường cuối cùng, trước hàng nút gửi;
+  - hiện mọi thông báo còn đúng, mỗi thông báo một banner, xếp theo mức độ danger → warning → info, cách nhau `space-sm`;
+  - mỗi lần bấm gửi: xóa hết banner cũ trước khi hiện kết quả mới;
+  - không lặp: cùng nội dung chỉ một banner;
+  - banner có `role="alert"` (danger, warning) hoặc `role="status"` (info) để trình đọc màn hình đọc ngay.
+- **Hộp thoại:** cùng quy tắc, vùng thông báo ngay trên hàng nút. Gửi lỗi mà hộp thoại đã đóng (ví dụ Đổi mật khẩu) thì thông báo về vùng thông báo của form gốc.
+- **Thông báo cấp trang** (trạng thái hệ thống, không gắn với form nào, ví dụ "Đã tự dừng"): banner dưới đầu trang, trên nội dung.
+- **Thành công:** toast; không dùng banner success trong form, trừ khi thông báo phải ở lại trên trang.
+- **Lỗi khi thao tác không có form** (nút trong danh sách, công tắc có hiệu lực ngay): toast danger.
+- **Câu chữ:** một thông báo dùng chung cho nhiều màn hình hoặc nhiều endpoint phải đúng nghĩa ở mọi chỗ nó hiện; không đúng thì viết câu trung tính hoặc tách câu riêng.
 
 ## Trạng thái tương tác
 
@@ -199,3 +217,4 @@ breakpoint:
 ## Lịch sử thay đổi
 
 - 2026-10-29: tạo mới
+- 2026-10-31: thêm mục "Vị trí thông báo" (không đổi token) – lý do: góp ý duyệt UI `auth`, banner ở đầu form dễ bị bỏ qua và câu thông báo dùng chung sai nghĩa ở màn khác; ADR `0016-form-message-placement`

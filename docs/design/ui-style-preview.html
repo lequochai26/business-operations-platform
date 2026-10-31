@@ -144,6 +144,18 @@
     .progress { grid-column: 1 / -1; height: var(--space-sm); background: var(--color-surface-divider); border-radius: var(--radius-pill); overflow: hidden; }
     .progress > div { height: 100%; background: var(--color-brand-primary); }
     .progress.is-near-limit > div { background: var(--color-status-warning); }
+
+    /* Vị trí thông báo */
+    .demo { display: flex; flex-direction: column; gap: var(--space-md); }
+    .demo-form { display: flex; flex-direction: column; gap: var(--space-lg); }
+    .msg-area { display: flex; flex-direction: column; gap: var(--space-sm); outline: var(--border-width-default) dashed var(--color-status-neutral); outline-offset: var(--space-xs); }
+    .msg-area .alert + .alert { margin-top: 0; }
+    .msg-label { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: calc(var(--space-sm) * -1); }
+    .demo-page { background: var(--color-surface-page); border: var(--border-width-default) solid var(--color-surface-border); border-radius: var(--radius-md); padding: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-md); }
+    .demo-page .t-page { font-size: var(--font-size-xl); }
+    .demo-backdrop { background: var(--color-surface-overlay); border-radius: var(--radius-md); padding: var(--space-xl); }
+    .demo-dialog { background: var(--color-surface-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-overlay); padding: var(--space-xl); display: flex; flex-direction: column; gap: var(--space-md); }
+    .demo-actions { display: flex; justify-content: flex-end; gap: var(--space-sm); }
   </style>
 </head>
 <body>
@@ -433,6 +445,57 @@
         <h3>toast</h3>
         <div class="toast toast-success"><span>Đã duyệt comment cho bài “Tìm chỗ làm nail gần Q11”.</span><button class="btn btn-ghost btn-sm">Hoàn tác</button></div>
         <div class="toast toast-danger"><span>Không gửi được tin nhắn cho khách Thư.</span><button class="btn btn-ghost btn-sm">Thử lại</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Vị trí thông báo</h2>
+    <p class="muted">ADR 0016 · khung nét đứt = vùng thông báo của form (không vẽ trong app thật)</p>
+    <div class="cols-2" style="margin-top: var(--space-lg)">
+      <div class="demo">
+        <h3>Form: lỗi cấp form ngay trên nút gửi (lỗi theo trường vẫn ở dưới ô)</h3>
+        <div class="card demo-form">
+          <label class="field">Tên đăng nhập<input class="input" value="mio"></label>
+          <label class="field">Mật khẩu<input class="input" type="password"></label>
+          <span class="msg-label">vùng thông báo</span>
+          <div class="msg-area"><div class="alert alert-danger" role="alert">Nhập sai mật khẩu quá nhiều lần. Thử lại sau 12 phút.</div></div>
+          <div class="row"><button class="btn btn-primary">Đăng nhập</button></div>
+        </div>
+      </div>
+      <div class="demo">
+        <h3>Nhiều thông báo cùng lúc: xếp danger → warning → info, thành công dùng toast</h3>
+        <div class="card demo-form">
+          <label class="field">Link group<input class="input" value="facebook.com/groups/nailq11"></label>
+          <label class="field">Giới hạn comment/ngày<input class="input" value="10"><span class="hint">Từ 1 đến 50</span></label>
+          <span class="msg-label">vùng thông báo</span>
+          <div class="msg-area">
+            <div class="alert alert-warning" role="alert">Group “Nail Quận 11 – Tìm thợ” vừa bật chặn link: comment sẽ không kèm link Page.</div>
+            <div class="alert alert-info" role="status">Giới hạn mới áp dụng từ chu kỳ quét kế tiếp.</div>
+          </div>
+          <div class="row"><button class="btn btn-primary">Lưu</button><button class="btn btn-ghost">Hủy</button></div>
+        </div>
+        <div class="toast toast-success"><span>Đã lưu cài đặt group.</span></div>
+      </div>
+      <div class="demo">
+        <h3>Hộp thoại: vùng thông báo ngay trên hàng nút</h3>
+        <div class="demo-backdrop">
+          <div class="demo-dialog">
+            <span class="t-dialog">Dừng toàn bộ tự động hóa?</span>
+            <p>Mọi việc quét, comment và trả lời tự động sẽ dừng cho tới khi bấm Chạy lại.</p>
+            <span class="msg-label">vùng thông báo</span>
+            <div class="msg-area"><div class="alert alert-danger" role="alert">Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại.</div></div>
+            <div class="demo-actions"><button class="btn btn-ghost">Hủy</button><button class="btn btn-danger">Dừng khẩn cấp</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="demo">
+        <h3>Thông báo cấp trang: dưới đầu trang, trên nội dung</h3>
+        <div class="demo-page">
+          <span class="t-page">Hôm nay</span>
+          <div class="alert alert-danger" role="alert"><b>Đã tự dừng</b>Tài khoản vận hành gặp 3 lỗi liên tiếp lúc 14:05. Xem ảnh màn hình trong Nhật ký hệ thống.</div>
+          <div class="card"><span class="card-title">Việc cần làm ngay</span><p class="muted">3 bài chờ duyệt · 1 báo giá chờ thợ</p></div>
+        </div>
       </div>
     </div>
   </section>

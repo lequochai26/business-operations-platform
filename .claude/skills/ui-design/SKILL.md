@@ -30,6 +30,7 @@ Cho người dùng thấy trước màn hình trông thế nào, chỉnh và ch�
 3. Vẽ mỗi trạng thái thành một file từ `templates/mockup-state.html`: `normal.html`, `empty.html`, `loading.html`, `validation-error.html`, `system-error.html`, `forbidden.html`. Trạng thái không áp dụng thì không vẽ và ghi lý do trong `notes.md`.
    - Khung 1440×900; chỉ dùng `var(--...)`; nhúng component bằng `<script src>` + thẻ `mio-…`, không chép code component.
    - Dữ liệu mẫu thực tế, tiếng Việt có dấu; thông báo lỗi đúng nguyên văn thiết kế chi tiết.
+   - Đặt thông báo theo `ui-style.md` mục "Vị trí thông báo". Thông báo dùng chung nhiều màn hình mà đọc sai nghĩa ở màn đang vẽ: báo người dùng, sửa câu trong thiết kế chi tiết (bước 7).
 4. Tạo `index.html` liệt kê link tới từng trạng thái, và `notes.md` theo `templates/screen-notes.md`.
 5. Chụp: `py tools/ui/screenshot.py docs/design/ui/<màn hình> --out docs/design/ui/<màn hình>/screenshots`.
 6. Gửi người dùng ảnh chụp (có thể đăng thành link riêng tư để chủ tiệm xem và góp ý).
@@ -51,6 +52,7 @@ Sau bước 6: người dùng duyệt mockup. Sửa thì quay lại bước 3.
 - Mọi màn hình trong thiết kế chi tiết đều có mockup.
 - Mọi quy tắc `R-…` có thông báo lỗi hiện trên màn hình đều được minh họa ở `validation-error.html`.
 - Mockup vai trò không có quyền (`forbidden.html`) khớp quy tắc phân quyền.
+- Thông báo đặt đúng `ui-style.md` mục "Vị trí thông báo" (ADR 0016): lỗi theo trường dưới ô; thông báo cấp form trong vùng thông báo ngay trên hàng nút gửi (cả trong hộp thoại); thông báo cấp trang dưới đầu trang; thành công dùng toast.
 - Không có mã màu, cỡ chữ viết cứng; ảnh chụp không lỗi script, chữ tiếng Việt đúng.
 
 ## Cập nhật status.md

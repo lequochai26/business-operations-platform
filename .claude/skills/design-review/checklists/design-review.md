@@ -9,10 +9,12 @@
 - [ ] Không mâu thuẫn với `docs/design/db-schema.md`, `docs/design/api/*.md`, thiết kế đã duyệt của tính năng khác.
 - [ ] Tên bảng, cột, endpoint, mã lỗi theo `CLAUDE.md` mục `## Quy ước`.
 - [ ] Mockup khớp thiết kế: trường, thông báo lỗi nguyên văn, phân quyền.
+- [ ] Mockup và thiết kế đặt thông báo đúng `docs/design/ui-style.md` mục "Vị trí thông báo" (ADR 0016): lỗi cấp form ở vùng thông báo ngay trên hàng nút gửi, không ở đầu form.
 
 ## Rõ ràng
 - [ ] Không có câu hiểu được theo hai cách (ví dụ "thông báo phù hợp", "xử lý lỗi").
 - [ ] Mọi trường nhập có kiểu, bắt buộc, khoảng/định dạng, thông báo lỗi nguyên văn.
+- [ ] Thông báo dùng chung cho nhiều màn hình hoặc nhiều endpoint (cùng mã lỗi) đúng nghĩa ở mọi chỗ nó hiện (ADR 0016); không thì viết câu trung tính hoặc tách câu riêng.
 - [ ] Mọi tham số có mặc định và khoảng hợp lệ.
 
 ## Đủ trường hợp
