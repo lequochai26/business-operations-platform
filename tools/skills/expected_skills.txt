@@ -18,3 +18,4 @@ change-request
 feedback
 manual-test-run
 acceptance-report
+reader-view
