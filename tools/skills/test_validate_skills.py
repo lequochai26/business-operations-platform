@@ -67,6 +67,18 @@ def test_validate_skill_accepts_crlf_and_bom(tmp_path):
     assert validate_skill(d, tmp_path) == []
 
 
+def test_reader_skill_must_mention_reader_view(tmp_path):
+    d = make_skill(tmp_path, skill_text(name="detailed-design"), name="detailed-design")
+    assert "thiếu bước gọi reader-view" in validate_skill(d, tmp_path)
+    fixed = make_skill(tmp_path / "ok", skill_text(name="detailed-design", body_extra="Gọi `reader-view`."), name="detailed-design")
+    assert validate_skill(fixed, tmp_path / "ok") == []
+
+
+def test_other_skill_does_not_need_reader_view(tmp_path):
+    d = make_skill(tmp_path, skill_text(name="tdd"), name="tdd")
+    assert validate_skill(d, tmp_path) == []
+
+
 def test_command_requires_description(tmp_path):
     p = tmp_path / "phase-status.md"
     p.write_text("---\nargument-hint: \"\"\n---\n\nNội dung\n", encoding="utf-8")

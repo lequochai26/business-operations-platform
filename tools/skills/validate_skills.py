@@ -25,6 +25,27 @@ REQUIRED_SECTIONS = [
 MAX_DESCRIPTION = 1024
 SKILL_RELATIVE = re.compile(r"^(templates|checklists|scripts)/\S+$")
 REPO_RELATIVE = re.compile(r"^(\.claude|tools)/\S+$")
+# Skill có ghi tài liệu trong docs/: phải gọi reader-view trước điểm dừng (docs/process/2026-10-31-reader-view-design.md mục 7).
+READER_SKILLS = (
+    "conventions-init",
+    "ui-style-init",
+    "ui-style-update",
+    "test-viewpoints-init",
+    "phase-kickoff",
+    "decision-log",
+    "detailed-design",
+    "ui-design",
+    "component-design",
+    "test-case-design",
+    "design-review",
+    "implementation-plan",
+    "implement-task",
+    "bug-fix",
+    "change-request",
+    "feedback",
+    "manual-test-run",
+    "acceptance-report",
+)
 
 
 def read_text(path: Path) -> str:
@@ -87,6 +108,8 @@ def validate_skill(skill_dir: Path, repo_root: Path) -> list[str]:
         errors.append("thiếu argument-hint trong frontmatter")
     errors += _check_sections(body)
     errors += _check_references(body, skill_dir, repo_root)
+    if skill_dir.name in READER_SKILLS and "reader-view" not in body:
+        errors.append("thiếu bước gọi reader-view")
     return errors
 
 

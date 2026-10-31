@@ -40,6 +40,8 @@ Tạo nguồn chính về style UI để mọi mockup và code UI dùng chung: `
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 - Sau bước 2: chờ người dùng chọn hướng style.
 - Sau bước 7: chờ người dùng duyệt preview. Sửa thì quay lại bước 3.
 
@@ -65,4 +67,5 @@ Không áp dụng (chạy trước khi có giai đoạn).
 
 - Đã tạo `ui-style.md`, `ui-tokens.css`, `ui-style-preview.html` và ảnh chụp; ADR đã tạo.
 - Cần người dùng quyết: điểm style còn băn khoăn (nếu có).
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/test-viewpoints-init`.

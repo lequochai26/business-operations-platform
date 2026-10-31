@@ -34,6 +34,8 @@ Chứng minh giai đoạn đã đạt tiêu chí, có bằng chứng, để ch�
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Sau bước 5: chờ chủ tiệm ký nghiệm thu (đồng ý hoặc không, kèm lý do).
 
 ## Output
@@ -57,4 +59,5 @@ Sau khi chủ tiệm đồng ý: ghi `- <ngày> | giai đoạn | nghiệm thu | 
 
 - Đường dẫn báo cáo, kết luận từng tiêu chí, cảnh báo khi xuất.
 - Cần người dùng quyết: chủ tiệm ký nghiệm thu; có xóa evidence sau khi xác nhận không.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/phase-kickoff <N+1>`.

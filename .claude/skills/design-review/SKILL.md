@@ -35,6 +35,8 @@ Bắt lỗi thiết kế và thiếu sót test case trước khi code, rồi ch�
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 - Sau bước 3: người dùng chọn điểm nào sửa.
 - Sau bước 5: người dùng duyệt thiết kế. Không còn điểm `chặn` nào chưa xử lý thì mới được duyệt.
 
@@ -57,4 +59,5 @@ Sau khi duyệt: trạng thái `test case` → `đã duyệt thiết kế`; ghi 
 
 - Số điểm theo mức độ, số đã sửa / không sửa.
 - Cần người dùng quyết: duyệt thiết kế.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/detailed-design <slug tiếp theo>` nếu còn tính năng chưa thiết kế, ngược lại `/implementation-plan`.

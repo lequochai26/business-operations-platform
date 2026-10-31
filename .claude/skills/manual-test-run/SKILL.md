@@ -42,6 +42,8 @@ Chạy manual test có evidence, ghi kết quả theo định dạng cố địn
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 - Mỗi case `người`: chờ người dùng gửi kết quả.
 - Cuối lần chạy: nếu có case không đạt, đề xuất `/bug-fix <mã>` và chờ người dùng chọn.
 
@@ -67,4 +69,5 @@ Chạy manual test có evidence, ghi kết quả theo định dạng cố địn
 
 - Mã lần chạy, số case đạt / không đạt / bị chặn / bỏ qua, vấn đề mới.
 - Cần người dùng quyết: sửa lỗi nào trước; chấp nhận case `bỏ qua` không.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/bug-fix <mã>` nếu có lỗi; `/acceptance-report N` nếu mọi tính năng đã `đạt`; ngược lại `/manual-test-run <slug tiếp theo>`.

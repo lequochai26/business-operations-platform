@@ -65,6 +65,12 @@ Mỗi skill kết thúc bằng 3 phần:
 - cần người dùng quyết gì;
 - bước tiếp theo là lệnh nào.
 
+## Bản đọc
+
+- Mỗi tài liệu trong `docs/phases/`, `docs/design/`, `docs/decisions/`, `docs/testing/` có một bản cho người đọc ở `docs/reader/` (Markdown) và `docs/reader/html/` (HTML, không commit), sinh bằng skill `reader-view`.
+- Bản đọc chỉ được sinh ra, không sửa tay, và không skill nào dùng bản đọc làm input. Mọi thay đổi nội dung đều sửa ở bản gốc.
+- Thiết kế: `docs/process/2026-10-31-reader-view-design.md`; cách viết: `docs/process/writing-guide.md`.
+
 ## Cấu trúc tài liệu
 
 ```text

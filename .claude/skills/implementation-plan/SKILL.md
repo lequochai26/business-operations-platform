@@ -37,6 +37,8 @@ Tạo `docs/phases/phase-N/plan.md`: danh sách task code để `/implement-task
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Sau bước 5: người dùng duyệt kế hoạch.
 
 ## Output
@@ -58,4 +60,5 @@ Ghi `- <ngày> | giai đoạn | duyệt kế hoạch code | <người duyệt>` 
 
 - Số task, thứ tự, task phụ thuộc dài nhất.
 - Cần người dùng quyết: duyệt kế hoạch.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/implement-task T01`.

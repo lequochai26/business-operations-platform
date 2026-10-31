@@ -30,6 +30,8 @@ Lưu lý do của các quyết định lớn để sau này không phải bàn l
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Không có điểm dừng riêng. Khi gọi tay mà thiếu thông tin phương án hoặc lý do: hỏi trước khi viết.
 
 ## Output
@@ -50,4 +52,5 @@ Không đổi trạng thái tính năng.
 
 - Đã ghi `docs/decisions/NNNN-<slug>.md` (và ADR bị thay thế, nếu có).
 - Cần người dùng quyết: chuyển trạng thái `đề xuất` → `chấp nhận` (nếu chưa).
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: quay lại skill đang làm dở.

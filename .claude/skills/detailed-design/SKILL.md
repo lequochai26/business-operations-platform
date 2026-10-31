@@ -42,6 +42,8 @@ Biến yêu cầu khái quát trong `docs/project/` thành thiết kế đủ ch
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Sau bước 9: người dùng trả lời câu hỏi mở và duyệt thiết kế. Chưa duyệt thì không đổi trạng thái tiếp.
 
 ## Output
@@ -68,4 +70,5 @@ Sau bước 9: người dùng trả lời câu hỏi mở và duyệt thiết k�
 
 - Đã ghi file thiết kế, các thay đổi `db-schema.md`, `api/*.md`, `openapi.yaml`, ADR (nếu có).
 - Cần người dùng quyết: câu hỏi mở còn lại.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/ui-design <slug>` nếu có màn hình, ngược lại `/test-case-design <slug>`.

@@ -37,6 +37,8 @@ Hiện thực đúng một task của `docs/phases/phase-N/plan.md`, có test v�
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 - Không có điểm dừng thường lệ.
 - Dừng và hỏi khi: thiết kế mâu thuẫn hoặc thiếu (gợi ý `/change-request`); task lớn hơn dự kiến cần tách; phải làm việc ngoài phạm vi task.
 
@@ -59,4 +61,5 @@ Tính năng: `đã duyệt thiết kế` → `đang code` (task đầu) → `đ�
 
 - Nhánh, commit, kết quả test/typecheck/lint, file đã sửa.
 - Cần người dùng quyết: chỗ lệch kế hoạch (nếu có).
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/review-code`.

@@ -39,6 +39,8 @@ Cho người dùng thấy trước màn hình trông thế nào, chỉnh và ch�
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Sau bước 6: người dùng duyệt mockup. Sửa thì quay lại bước 3.
 
 ## Output
@@ -63,4 +65,5 @@ Sau khi duyệt: trạng thái `UI` → `test case`; ghi `- <ngày> | <slug> | d
 
 - Các màn hình và trạng thái đã vẽ, component đã tạo/dùng, thay đổi ngược vào thiết kế chi tiết.
 - Cần người dùng quyết: duyệt mockup.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/test-case-design <slug>`.

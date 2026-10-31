@@ -30,6 +30,8 @@ Tạo `docs/testing/viewpoints.md`: danh sách khía cạnh mà mọi lần thi�
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Người dùng duyệt nội dung `viewpoints.md` trước khi kết thúc.
 
 ## Output
@@ -51,4 +53,5 @@ Không áp dụng (chạy trước khi có giai đoạn).
 
 - Đã tạo hoặc cập nhật `docs/testing/viewpoints.md`.
 - Cần người dùng quyết: khía cạnh muốn bổ sung (nếu có).
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/phase-kickoff 0` (nếu `/conventions-init` và `/ui-style-init` đã xong).

@@ -42,6 +42,8 @@ Nhận mọi phản hồi của người dùng trong lúc test, phân loại đ�
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Sau bước 3: người dùng xác nhận phân loại và hướng xử lý trước khi ghi sổ và chuyển skill.
 
 ## Output
@@ -63,4 +65,5 @@ Không đổi trực tiếp. `change-request` có thể lùi trạng thái tính
 
 - Mã vấn đề đã tạo, phân loại, đã chuyển sang skill nào, kết quả.
 - Cần người dùng quyết: các vấn đề còn chờ quyết.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/manual-test-run --retest <mã case>` sau khi sửa, hoặc tiếp tục test.

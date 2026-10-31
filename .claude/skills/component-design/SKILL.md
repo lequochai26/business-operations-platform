@@ -40,6 +40,8 @@ Thiết kế một component dùng chung một lần, để mọi màn hình nh�
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 - Component mới: người dùng duyệt ảnh gallery.
 - Sửa component đang được dùng: người dùng duyệt thay đổi **trước** khi chụp lại các màn hình bị ảnh hưởng.
 
@@ -63,4 +65,5 @@ Không đổi trạng thái tính năng (component là một phần của bướ
 
 - Component đã tạo/sửa, các màn hình bị ảnh hưởng (nếu sửa).
 - Cần người dùng quyết: duyệt component.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: quay lại `/ui-design <slug>` đang làm dở.

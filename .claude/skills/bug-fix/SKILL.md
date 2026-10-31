@@ -39,6 +39,8 @@ Sửa đúng nguyên nhân gốc của lỗi, có test chứng minh lỗi đã h
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 - Bước 2: lỗi do thiết kế → dừng, xác nhận với người dùng trước khi chuyển `change-request`.
 - Bước 5: không tái hiện được → dừng, hỏi người dùng.
 
@@ -61,4 +63,5 @@ Không đổi trạng thái tính năng.
 
 - Nguyên nhân gốc, cách sửa, test đã thêm, commit, mục vấn đề.
 - Cần người dùng quyết: merge (qua `/review-code`).
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/review-code`, sau đó `/manual-test-run --retest <mã case>`.

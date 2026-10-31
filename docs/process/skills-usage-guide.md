@@ -58,6 +58,16 @@ Lưu ý:
 - Duyệt một bước **không** có nghĩa là duyệt luôn các bước sau.
 - Merge vào `main` chỉ xảy ra khi bạn đồng ý ở bước `/review-code`.
 
+### Đọc tài liệu qua bản đọc
+
+Tài liệu do skill sinh ra (bản gốc) viết cho AI: nhiều mã số, tham chiếu chéo, văn kiểu ghi chú. Để review nhanh, mỗi tài liệu có một **bản đọc**:
+- **Markdown:** `docs/reader/<cùng đường dẫn như trong docs/>`, ví dụ `docs/reader/phases/phase-0/design/auth.md`.
+- **HTML:** mở `docs/reader/html/index.html` để xem danh sách; rê chuột lên mã để xem ý nghĩa, bấm mã để nhảy tới chỗ định nghĩa.
+- Trong bản Markdown, phần *nghiêng trong ngoặc* sau mã, ví dụ R-AUT-06 *(Giới hạn đăng nhập sai)*, là ý nghĩa do script chèn từ định nghĩa gốc.
+- Ở mỗi điểm dừng, skill gửi kèm link bản đọc của các file vừa ghi. Lần duyệt vẫn được ghi cho bản gốc.
+- Bản đọc **không sửa tay**. Muốn sửa nội dung thì yêu cầu sửa bản gốc; bản đọc được sinh lại.
+- Bản đọc cũ hơn bản gốc: trang HTML có dải cảnh báo vàng, `/phase-status` liệt kê ở dòng "Bản đọc đã cũ". Sinh lại bằng `/reader-view <file>`, `/reader-view phase-N` hoặc `/reader-view all`.
+
 ---
 
 ## 5. Toàn cảnh vòng đời

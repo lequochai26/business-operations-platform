@@ -39,6 +39,8 @@ argument-hint: "<nội dung thay đổi>"
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Sau bước 3: người dùng duyệt danh sách ảnh hưởng trước khi sửa bất kỳ file nào.
 
 ## Output
@@ -60,4 +62,5 @@ Lùi trạng thái tính năng về bước sớm nhất bị ảnh hưởng; gh
 
 - Danh sách file đã sửa, trạng thái mới của tính năng, task mới, ADR (nếu có).
 - Cần người dùng quyết: duyệt lại bước bị lùi.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: lệnh của bước bị lùi về (ví dụ `/design-review <slug>`), hoặc `/implement-task <task mới>`.

@@ -35,6 +35,8 @@ Chốt các quy ước mà mọi skill code về sau (`implement-task`, `tdd`, `
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 - Sau mỗi nhóm: chờ người dùng chọn phương án.
 - Trước khi ghi `CLAUDE.md`: trình bày toàn bộ mục `## Quy ước` sẽ ghi, chờ người dùng duyệt.
 
@@ -58,4 +60,5 @@ Không áp dụng (chạy trước khi có giai đoạn).
 
 - Đã ghi mục `## Quy ước` vào `CLAUDE.md`, liệt kê các ADR đã tạo.
 - Cần người dùng quyết: các điểm còn bỏ ngỏ (nếu có).
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/ui-style-init`.

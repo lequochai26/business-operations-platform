@@ -13,6 +13,8 @@ Giai đoạn: nếu có tham số `$ARGUMENTS` thì dùng số đó; nếu khôn
 - `test/runs/*/results.md` (nếu có): với mỗi mã case lấy kết quả của lần chạy mới nhất; đếm `đạt`, `không đạt`, `bị chặn`, `bỏ qua`; số case chưa chạy = số case trong `test/cases/*.md` (không tính case có dòng `- Đã bỏ:`) trừ số case đã có kết quả;
 - `issues.md` (nếu có): đếm mục có `- Trạng thái:` là `mở`, `đang xử lý` hoặc `chờ test lại`.
 
+Bản đọc cũ: chạy `py tools/reader/cli.py stale phase-N` (chỉ đọc), lấy các dòng nó in ra (bỏ qua nếu in "Mọi bản đọc đều mới").
+
 In ra đúng dạng sau (không thêm phần khác):
 
 ```text
@@ -22,6 +24,7 @@ Giai đoạn N – <tên>
 - Test case: <đạt> đạt, <không đạt> không đạt, <bị chặn> bị chặn, <bỏ qua> bỏ qua, <chưa chạy> chưa chạy
 - Vấn đề đang mở: <số> (<mã>, …)
 - Đang chặn: <từng vấn đề, ngăn bằng ;> | không có
+- Bản đọc đã cũ: <đường dẫn bản gốc, ngăn bằng ;> | không có
 Lệnh nên chạy tiếp: <lệnh>
 ```
 

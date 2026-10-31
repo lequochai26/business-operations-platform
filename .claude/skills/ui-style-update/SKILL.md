@@ -40,6 +40,8 @@ Thay đổi style toàn hệ thống mà vẫn giữ mọi component và mockup 
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 - Sau bước 1: người dùng xác nhận danh sách token cần đổi.
 - Sau bước 4: người dùng duyệt ảnh preview mới **trước** khi sửa component và mockup.
 
@@ -63,4 +65,5 @@ Không đổi trạng thái tính năng. Ghi một dòng vào `## Nhật ký duy
 
 - Token đã đổi, component và màn hình đã cập nhật, ADR (nếu có).
 - Cần người dùng quyết: có chạy lại các test case hiển thị ngay không.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/manual-test-run --retest <mã case>` cho các case đã liệt kê, hoặc tiếp tục công việc đang dở.

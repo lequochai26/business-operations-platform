@@ -41,6 +41,8 @@ Tạo `docs/phases/phase-N/status.md`: nguồn sự thật về phạm vi và tr
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Sau bước 5: người dùng xác nhận phạm vi, danh sách tính năng và thứ tự.
 
 ## Output
@@ -62,4 +64,5 @@ Tạo mới. Ghi dòng `- <ngày> | giai đoạn | mở giai đoạn | <người
 
 - Đã tạo `status.md` với <n> tính năng, <m> vấn đề đang chặn.
 - Cần người dùng quyết: các vấn đề đang chặn cần ai xử lý.
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/detailed-design <slug của tính năng đầu tiên>`.

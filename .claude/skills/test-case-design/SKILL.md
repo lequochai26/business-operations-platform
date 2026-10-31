@@ -44,6 +44,8 @@ Sinh bộ manual test case đầy đủ, truy vết được tới từng quy t�
 
 ## Điểm dừng
 
+Trước mỗi điểm dừng và trước báo cáo kết thúc: gọi `reader-view` cho các file trong `docs/` vừa ghi, gửi kèm link bản đọc Markdown và HTML.
+
 Không có điểm dừng riêng: bộ case được duyệt cùng thiết kế ở `/design-review`.
 
 ## Output
@@ -63,4 +65,5 @@ Không đổi trạng thái (vẫn `test case` cho tới khi `/design-review` du
 
 - Số case theo khía cạnh, số case Claude làm / người làm, số case regression; khía cạnh không áp dụng.
 - Cần người dùng quyết: tình huống nào thiết kế chưa nói rõ hành vi đúng (nếu có).
+- Link bản đọc của các file vừa ghi.
 - Bước tiếp theo: `/design-review <slug>`.
