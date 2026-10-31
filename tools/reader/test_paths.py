@@ -37,6 +37,12 @@ def test_select_sources_phase_and_all(tmp_path):
     assert one == [docs / "design/db-schema.md"]
 
 
+def test_select_sources_accepts_relative_file_path(tmp_path, monkeypatch):
+    docs = make_docs(tmp_path)
+    monkeypatch.chdir(tmp_path)
+    assert select_sources(docs, ["docs/design/db-schema.md"]) == [docs / "design/db-schema.md"]
+
+
 def test_reader_and_rewrite_paths(tmp_path):
     docs = tmp_path / "docs"
     src = docs / "phases/phase-0/design/auth.md"

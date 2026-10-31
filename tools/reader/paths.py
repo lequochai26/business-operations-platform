@@ -28,7 +28,7 @@ def select_sources(docs_root: Path, targets: list[str]) -> list[Path]:
             base = docs_root / "phases" / target
             selected += [p for p in all_files if base in p.parents]
         else:
-            selected.append(Path(target))
+            selected.append(Path(target).absolute())
     return list(dict.fromkeys(selected))
 
 
