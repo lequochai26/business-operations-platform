@@ -89,6 +89,13 @@ def test_render_expands_abbreviations(tmp_path):
     assert "`http://127.0.0.1:3000/api/v1/sessions`" in text
 
 
+def test_render_keeps_abbreviation_definition_lines_unexpanded(tmp_path):
+    text, _ = render_line(tmp_path, "phases/phase-0/test/cases/auth.md", "- `<api>` = `http://127.0.0.1:3000/api/v1`;\n- Gọi `<api>/x`.")
+    assert "- `<api>` = `http://127.0.0.1:3000/api/v1`;" in text
+    assert "`http://127.0.0.1:3000/api/v1` = " not in text
+    assert "Gọi `http://127.0.0.1:3000/api/v1/x`." in text
+
+
 def test_expand_unknown_id_left_plain_with_warning(tmp_path):
     text, warnings = render_line(tmp_path, "phases/phase-0/test/cases/auth.md", "Xem R-XYZ-09.")
     assert "Xem R-XYZ-09." in text

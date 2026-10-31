@@ -1,3 +1,5 @@
+import re
+
 from reader.html_site import render_site
 
 PAGE = """> Bản đọc sinh từ docs/phases/phase-0/test/cases/auth.md (phiên bản a3f9c21, 2026-10-31 14:20). Không sửa tay.
@@ -41,6 +43,15 @@ def test_html_links_point_to_html(tmp_path):
     html = page_html(docs)
     assert 'href="../../design/auth.html#s-abcdef0123"' in html
     assert 'href="../../../../../../design/ui-tokens.css"' in html
+
+
+def test_html_nested_list_with_two_space_indent(tmp_path):
+    docs, reader = make_reader(tmp_path)
+    reader.write_text("- Cha:\n  - con một;\n  - con hai.\n- Cha hai.\n", encoding="utf-8")
+    render_site(docs, set())
+    html = page_html(docs)
+    assert html.count("<ul>") == 2
+    assert re.search(r"<li>Cha:\s*<ul>\s*<li>con một;</li>", html)
 
 
 def test_html_stale_banner(tmp_path):

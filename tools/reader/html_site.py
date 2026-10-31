@@ -40,6 +40,20 @@ def _page(title: str, css_href: str, body: str) -> str:
     )
 
 
+LIST_ITEM = re.compile(r"^( +)([-*+]|\d+\.) ")
+
+
+def _widen_list_indent(text: str) -> str:
+    """Python-Markdown cần thụt 4 dấu cách cho danh sách lồng; tài liệu dùng 2 nên nhân đôi thụt lề của dòng mục."""
+    lines, in_fence = [], False
+    for line in text.split("\n"):
+        if line.lstrip().startswith("```"):
+            in_fence = not in_fence
+        match = None if in_fence else LIST_ITEM.match(line)
+        lines.append(match.group(1) + line if match else line)
+    return "\n".join(lines)
+
+
 def _title(text: str, fallback: str) -> str:
     match = re.search(r"^#{1,3} (.+)$", text, re.MULTILINE)
     return match.group(1).strip() if match else fallback
@@ -51,7 +65,7 @@ def render_site(docs_root: Path, stale_readers: set[Path]) -> list[Path]:
     css = docs_root / "design" / "ui-tokens.css"
     for md_path in pages:
         text = read_text(md_path)
-        content = markdown.markdown(text, extensions=["tables", "fenced_code"])
+        content = markdown.markdown(_widen_list_indent(text), extensions=["tables", "fenced_code"])
         content = INLINE_GLOSS.sub(r"\1", content)
         content = MD_HREF.sub(lambda m: f'href="{m.group(1)}.html{m.group(2) or ""}"', content)
         if md_path in stale_readers:

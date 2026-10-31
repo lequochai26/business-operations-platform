@@ -205,7 +205,7 @@ Liệt kê bản gốc chưa có bản đọc, hoặc có hash khác hash ghi �
   - `docs/reader/<đường dẫn tương đối so với docs/>`: bản đọc Markdown, commit;
   - `docs/reader/_rewrite/`: bản viết lại chưa chèn ý nghĩa, commit (cần cho viết lại từng phần);
   - `docs/reader/html/`: không commit, thêm vào `.gitignore`.
-- **Tài liệu đã có** (39 file lúc viết spec): chạy `/reader-view all` một lần sau khi làm xong.
+- **Tài liệu đã có** (39 file lúc viết spec): sau khi merge nhánh `process/reader-view` vào `main`, chạy `/reader-view all` một lần trên `main`. Chạy thử ngày 31/10/2026 với `design/auth.md` và `test/cases/auth.md` thật: `build` đạt kiểm tra trung thực, bản đọc Markdown và HTML đúng như ví dụ mục 3.
 - **Chi phí:** mỗi điểm dừng tốn thêm token cho các mục vừa đổi. Viết lại theo mục (5.2) giữ chi phí tỷ lệ với lượng thay đổi.
 
 ---

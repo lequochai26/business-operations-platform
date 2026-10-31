@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-from reader.abbrev import expand_abbreviations, parse_abbreviations
+from reader.abbrev import PAIR, expand_abbreviations, parse_abbreviations
 from reader.ids import Index, expand_range, find_refs
 from reader.paths import reader_path, rewrite_path
 from reader.rewrite import parse_rewrite
@@ -88,7 +88,10 @@ def render_reader(docs_root: Path, src: Path, blocks: list, index: Index, now: d
 
     out = [header_line(src_rel, short_hash(src_text), now), ""]
     for block in blocks:
-        body = expand_abbreviations(block.body, abbrevs)
+        # Dòng định nghĩa viết tắt giữ nguyên, nếu không sẽ thành "<giá trị> = <giá trị>".
+        body = "\n".join(
+            line if PAIR.search(line) else expand_abbreviations(line, abbrevs) for line in block.body.split("\n")
+        )
         out.append(f'<a id="s-{block.key}"></a>')
         out.append("")
         out.extend(render_line(line, block.key) for line in body.split("\n"))
