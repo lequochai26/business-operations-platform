@@ -7,13 +7,14 @@ Phần này ghi lại các quyết định kỹ thuật **đã chốt với ch�
 ## 1. Đã chốt
 
 - **Người code:** Claude Code.
-- **Nền tảng:** kế thừa POC `D:\Personal\Projects\fb-post-crawler-poc`. POC dùng Node.js + TypeScript, Playwright + Chromium với phiên đăng nhập lưu lại, zod, vitest.
+- **Nền tảng:** kế thừa POC `poc/fb-post-crawler-poc` (trong repo, không commit; spec ở `docs/superpowers/specs/2026-10-01-fb-group-crawler-poc-design.md`). POC dùng Node.js + TypeScript, Playwright + Chromium với phiên đăng nhập lưu lại, zod, vitest.
 - **Kiến trúc** theo file ý tưởng `D:\Personal\Files\facebook-group-auto-promotion-playwright-idea.md`:
   - NestJS làm backend: lịch chạy, API, xử lý nghiệp vụ;
   - BullMQ + Redis làm hàng đợi;
   - PostgreSQL làm cơ sở dữ liệu;
   - worker trình duyệt chạy Playwright.
 - **Nơi chạy:** **Oracle Cloud Free Tier**, một máy ảo chạy 24/7. Ưu tiên không tốn tiền máy chủ.
+  - Cập nhật 2026-10-29: chưa đăng ký được Oracle Free. Trước mắt chạy Docker Compose trên máy local (x64), giữ khả năng dời lên Oracle mà không sửa code (ADR `0009-local-first-deployment`).
 - **AI:**
   - **Phần chữ** (phân loại bài, trích ngày giờ, mô tả 1 dòng từ ảnh, viết content, hiểu tin nhắn khách và thợ): **Google Gemini, gói miễn phí**, model Flash hoặc Flash-Lite.
   - **Phần chỉnh ảnh:** **Google Gemini Nano Banana 2.1, ảnh 2K, trả phí theo lượt** (khoảng 6 USD/tháng với 4 ảnh/ngày). Dự phòng: chủ tiệm tự chỉnh rồi tải ảnh lên.
@@ -39,7 +40,7 @@ Những phần thay đổi:
 - Cấu hình chuyển từ `.env` sang cài đặt trong cơ sở dữ liệu. Chỉ giữ các khóa bí mật và đường dẫn trong `.env`.
 
 Những việc POC chưa trả lời được và cần kiểm chứng sớm (giai đoạn 0 và 1, xem `05-roadmap.md`):
-- Chạy Chromium + Playwright trên máy ARM của Oracle.
+- Chạy Chromium + Playwright trên máy ARM của Oracle (kiểm chứng khi triển khai lên máy chủ).
 - Phiên đăng nhập có ổn định khi chạy 24/7 từ IP máy chủ không.
 - Comment và đăng bài group bằng Playwright, kèm ảnh.
 - Mỗi chu kỳ quét cần scroll bao nhiêu là đủ.
@@ -75,7 +76,7 @@ Oracle Cloud Free VM (Ampere A1 ARM, tối đa 4 OCPU / 24GB RAM)
 Ghi chú về các thành phần:
 - **Mọi thao tác dùng tài khoản vận hành** (quét, comment, đăng group) đi qua **một hàng đợi duy nhất, chạy từng việc một**, dùng **một** persistent context. Như vậy tài khoản không bao giờ làm hai việc cùng lúc, và phanh an toàn được áp dụng ở một chỗ.
 - **Render poster** dùng một Chromium riêng, không gắn profile Facebook.
-- **Đóng gói:** đề xuất Docker Compose cho toàn bộ dịch vụ. Image Playwright phải là bản linux/arm64.
+- **Đóng gói:** đề xuất Docker Compose cho toàn bộ dịch vụ. Image build được cho cả linux/amd64 (máy local) và linux/arm64 (Oracle A1). Đường dẫn dữ liệu, đích sao lưu và URL công khai đặt qua biến môi trường và volume.
 - **Giao diện web:** đề xuất một SPA (ví dụ React + Vite) có PWA và web push, do NestJS phục vụ. Người code tự chọn framework.
 - **HTTPS là bắt buộc**, vì webhook của Meta và web push đều yêu cầu.
   - Cần một **tên miền cố định**. Quick tunnel của Cloudflare đổi URL mỗi lần chạy nên không dùng được cho webhook.
@@ -201,7 +202,7 @@ Dùng cho **kênh thợ** và **đăng bài lên Page**. Inbox khách **không**
 ## 7. Lưu trữ, sao lưu, bảo mật
 
 - **Ảnh và debug dump:** lưu trên block volume của máy ảo. Dọn debug dump cũ hơn 14 ngày.
-- **Sao lưu hằng đêm** (đề xuất): `pg_dump` và thư mục ảnh lên **Oracle Object Storage**, trong hạn mức miễn phí. Giữ 7 bản gần nhất.
+- **Sao lưu hằng đêm** (đề xuất): `pg_dump` và thư mục ảnh ra một thư mục cấu hình được, giữ 7 bản gần nhất. Khi có máy chủ thì bật thêm bước đẩy lên **Oracle Object Storage** (giao thức tương thích S3), trong hạn mức miễn phí.
 - **Khóa bí mật** (Page token, Meta app secret, khóa Gemini, mật khẩu cơ sở dữ liệu) để trong biến môi trường hoặc file bí mật, không đưa vào repo.
 - **Profile trình duyệt** chứa phiên đăng nhập Facebook của tài khoản vận hành. Thư mục này chỉ người chạy dịch vụ được đọc, và không đưa vào bản sao lưu công khai.
 - **Web app:** mật khẩu băm (argon2 hoặc bcrypt), phiên đăng nhập an toàn, giới hạn số lần đăng nhập sai.
@@ -236,7 +237,7 @@ Giữ cách làm của POC: vitest và fixture thật đã ẩn thông tin cá n
 - **Tài khoản dùng cho inbox bị khóa**, nên khách không được tự trả lời. Giảm thiểu: dùng tài khoản riêng chỉ có quyền nhắn tin, tự dừng và báo khẩn, người thật trả lời thay.
 - **Cửa sổ 24 giờ** làm kênh thợ bị gián đoạn. Giảm thiểu: nút giữ cửa sổ, web push.
 - **Facebook đổi cấu trúc GraphQL hoặc giao diện.** Giảm thiểu: parser theo dấu hiệu, debug dump, báo lỗi rõ ràng.
-- **IP datacenter bị nghi ngờ.** Theo dõi trong giai đoạn thử.
+- **IP datacenter bị nghi ngờ.** Giai đoạn 0 chạy bằng IP nhà mạng nên chưa đo được. Theo dõi khi triển khai lên máy chủ.
 - **Gói miễn phí Gemini bị giảm hạn mức hoặc đổi chính sách.** Giảm thiểu: interface nhà cung cấp, hàng đợi có ưu tiên.
 - **AI hiểu sai** thời gian, giá, ý định. Giảm thiểu: lấy dữ liệu từ nguồn thật (lịch, bộ thông tin, câu trả lời của thợ), AI chỉ diễn đạt lại; có xác nhận lại với thợ; có bộ đánh giá.
-- **Tài nguyên máy Oracle Free** (ARM, RAM chung cho Chromium, PostgreSQL, Redis). Kiểm chứng ở giai đoạn 0.
+- **Tài nguyên máy Oracle Free** (ARM, RAM chung cho Chromium, PostgreSQL, Redis). Giai đoạn 0 đo trên máy local để ước lượng, kiểm chứng lại khi triển khai lên máy chủ.

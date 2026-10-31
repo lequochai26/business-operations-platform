@@ -83,7 +83,7 @@ tools/                  # script dùng chung: kiểm tra skill, sinh token, ch�
 
 ## Quy ước
 
-Chốt ngày 2026-10-29. ADR liên quan: 0001-monorepo-pnpm, 0002-drizzle-orm, 0003-naming-conventions, 0004-branching-and-commits, 0005-eslint-prettier, 0006-test-tooling, 0007-date-fns-tz.
+Chốt ngày 2026-10-29. ADR liên quan: 0001-monorepo-pnpm, 0002-drizzle-orm, 0003-naming-conventions, 0004-branching-and-commits, 0005-eslint-prettier, 0006-test-tooling, 0007-date-fns-tz, 0009-local-first-deployment.
 
 ### Cấu trúc thư mục code
 
@@ -96,7 +96,7 @@ Chốt ngày 2026-10-29. ADR liên quan: 0001-monorepo-pnpm, 0002-drizzle-orm, 0
 - DB (Drizzle): schema `apps/api/src/db/schema/*.ts`; migration SQL do drizzle-kit sinh trong `apps/api/migrations/`, không sửa tay migration đã merge.
 - Prompt AI: `apps/api/prompts/<tác-vụ>.v<n>.md`.
 - Test: `apps/<app>/test/`, cây thư mục giống `src/`; fixture `apps/<app>/test/fixtures/`; helper và bản giả `apps/<app>/test/support/`.
-- Docker: `compose.yml` ở gốc, `apps/<app>/Dockerfile` (image linux/arm64).
+- Docker: `compose.yml` ở gốc, `apps/<app>/Dockerfile`; image build được cho linux/amd64 (máy local) và linux/arm64 (Oracle A1). Khác biệt giữa các máy chỉ nằm ở biến môi trường và volume (ADR 0009-local-first-deployment).
 
 ### Đặt tên
 

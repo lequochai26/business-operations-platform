@@ -10,9 +10,11 @@ Mỗi giai đoạn nên được lên kế hoạch và code riêng. Có thể t�
 
 ## Giai đoạn 0 – Nền móng
 
-**Mục tiêu:** có khung app chạy được trên Oracle và kiểm chứng những điều kiện kỹ thuật lớn.
+**Mục tiêu:** có khung app chạy được bằng Docker trên máy local, dời được lên máy chủ sau này mà không sửa code, và kiểm chứng những điều kiện kỹ thuật lớn.
 
-- Dựng project: NestJS, PostgreSQL, Redis, BullMQ, Docker Compose cho linux/arm64.
+> Cập nhật 2026-10-29 (ADR `0009-local-first-deployment`): chưa đăng ký được Oracle Free, nên giai đoạn 0 chạy trên máy local. Việc dựng máy chủ chuyển sang mục "Triển khai lên máy chủ" bên dưới.
+
+- Dựng project: NestJS, PostgreSQL, Redis, BullMQ, Docker Compose. Image build được cho cả linux/amd64 (máy local) và linux/arm64 (Oracle A1). Mọi khác biệt giữa các máy nằm ở biến môi trường và volume.
 - Chuyển các module crawler của POC vào app.
 - **Hoàn thành checklist nghiệm thu còn dở của POC** (trong spec của POC), và kiểm chứng thêm:
   - sắp xếp `CHRONOLOGICAL` có chạy ở các group thật không;
@@ -20,20 +22,38 @@ Mỗi giai đoạn nên được lên kế hoạch và code riêng. Có thể t�
   - nội dung bài có bị cắt ngắn không;
   - có lấy được ảnh đính kèm cỡ đầy đủ không (cần cho bài loại 3).
 - **Worker trình duyệt chạy được như một tiến trình tách riêng**, chỉ kết nối tới Redis và PostgreSQL. Như vậy, nếu IP Oracle bị Facebook chặn nhiều, có thể chuyển worker về một máy ở nhà mà không sửa code.
-- Tạo máy ảo Oracle Free (Ampere A1), thiết lập HTTPS (tên miền + Caddy, hoặc Cloudflare Tunnel).
-- Thiết lập Xvfb + noVNC để đăng nhập tài khoản vận hành trên máy chủ.
+- Thiết lập Xvfb + noVNC trong container worker trình duyệt để đăng nhập tài khoản vận hành. Cách này dùng chung cho máy local và máy chủ.
 - Web app tối thiểu:
   - đăng nhập hai vai trò;
   - trang Cài đặt cho danh sách group và các tham số quét;
   - trạng thái tài khoản vận hành;
   - nút dừng khẩn cấp.
+- Email khẩn cho chủ tiệm khi app tự dừng (làm sớm từ giai đoạn 1, chốt 2026-10-29), để biết ngay khi chạy thử không có người theo dõi.
 - Job quét định kỳ ghi bài vào PostgreSQL.
-- Sao lưu hằng đêm.
+- Sao lưu hằng đêm ra thư mục cấu hình được. Đẩy lên Object Storage là tùy chọn, bật khi có máy chủ.
 
 **Xong khi:**
-- Chạy quét liên tục **ít nhất 3 ngày** trên Oracle bằng tài khoản phụ mà không bị đăng xuất, hoặc nếu bị thì app tự dừng và báo đúng.
+- Chạy quét bằng Docker trên máy local, **tổng cộng ít nhất 24 giờ** (có thể chia nhiều lần), bằng tài khoản phụ mà không bị đăng xuất, hoặc nếu bị thì app tự dừng và báo đúng.
 - Bài mới trong group xuất hiện trong cơ sở dữ liệu trong vòng 1 chu kỳ quét.
-- Ghi lại mức RAM và CPU thực tế.
+- Ghi lại mức RAM và CPU thực tế của từng container, để ước lượng cho máy chủ.
+
+---
+
+## Triển khai lên máy chủ (chưa xếp lịch)
+
+**Mục tiêu:** chuyển app từ máy local lên máy chủ chạy 24/7, khi đã đăng ký được Oracle Free (ADR `0009-local-first-deployment`).
+
+- Tạo máy ảo Oracle Free (Ampere A1), build image linux/arm64.
+- Thiết lập HTTPS: tên miền cố định + Caddy (hoặc Cloudflare Tunnel có tên miền).
+- Khôi phục dữ liệu từ bản sao lưu. Không copy profile trình duyệt; đăng nhập lại tài khoản vận hành trên máy chủ qua noVNC.
+- Gán thư mục dữ liệu (`MIO_DATA_DIR`) cho uid:gid `1000:1000` (`chown -R 1000:1000`) trước lần chạy đầu và sau khi khôi phục, vì các container chạy bằng uid này (thiết kế `app-skeleton` R-SKL-20).
+- Bật đẩy bản sao lưu lên Oracle Object Storage.
+
+**Bắt buộc xong trước:** bật web push ở giai đoạn 1 (iPhone cần HTTPS và tên miền cố định) và webhook Messenger ở giai đoạn 2. Nếu tới lúc đó vẫn chưa có Oracle thì chọn phương án HTTPS tạm và ghi ADR riêng.
+
+**Xong khi:**
+- Chạy quét liên tục **ít nhất 3 ngày** trên máy chủ bằng tài khoản phụ mà không bị đăng xuất, hoặc nếu bị thì app tự dừng và báo đúng (kiểm chứng rủi ro IP datacenter).
+- Ghi lại mức RAM và CPU thực tế trên máy chủ.
 
 ---
 
@@ -49,7 +69,7 @@ Mỗi giai đoạn nên được lên kế hoạch và code riêng. Có thể t�
 - Gửi comment bằng Playwright, kèm ảnh.
 - Phanh an toàn đầy đủ, tự dừng khi bất thường.
 - Nhật ký và thống kê cơ bản.
-- Thông báo cho chủ tiệm qua web push. Thông báo khẩn gửi thêm qua email, vì chủ tiệm dùng iPhone. Messenger chưa có ở giai đoạn này.
+- Thông báo cho chủ tiệm qua web push. Thông báo khẩn gửi thêm qua email, vì chủ tiệm dùng iPhone (kênh email đã có từ giai đoạn 0, giai đoạn này mở rộng cho các loại thông báo khẩn khác). Messenger chưa có ở giai đoạn này.
 - Bộ đánh giá phân loại từ bài thật.
 
 **Xong khi:**

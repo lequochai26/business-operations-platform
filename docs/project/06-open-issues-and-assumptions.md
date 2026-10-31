@@ -40,7 +40,12 @@ Mục này gồm hai phần:
 - **App có tự nói mình là trợ lý tự động khi khách hỏi không?** Tài liệu tạm đặt: không tự nói ra, nhưng nếu khách hỏi thẳng thì trả lời thật.
 - **Có chấp nhận gửi tin nhắn của khách qua gói miễn phí của Gemini không?** Với gói này, Google có thể dùng dữ liệu để cải thiện sản phẩm. Nếu không chấp nhận, phần đọc tin nhắn khách sẽ chuyển sang project trả phí. Chi phí rất nhỏ ở quy mô của tiệm, nhưng không còn miễn phí.
 - **Tài khoản nào chạy worker inbox?** Dùng chung tài khoản vận hành của group, hay một tài khoản riêng để tách rủi ro? Tài khoản này cần được thêm vào Page với quyền nhắn tin. Không nên dùng tài khoản đang sở hữu Page (xem `04-technical.md`, mục 4.3).
-- **Tên miền:** dùng tên miền phụ miễn phí (DuckDNS), hay mua tên miền riêng?
+- **Tên miền:** dùng tên miền phụ miễn phí (DuckDNS), hay mua tên miền riêng? Tạm hoãn tới khi triển khai lên máy chủ (ADR `0009-local-first-deployment`).
+
+## 2c. Cập nhật 29/10/2026
+- Chưa đăng ký được Oracle Free. Giai đoạn 0 chạy Docker trên máy local; việc dựng máy chủ, HTTPS, tên miền chuyển sang mục "Triển khai lên máy chủ" của roadmap (ADR `0009-local-first-deployment`).
+- Tiêu chí chạy thử của giai đoạn 0 đổi thành tổng cộng ít nhất 24 giờ trên máy local. Kiểm chứng 3 ngày liên tục chuyển sang lúc triển khai lên máy chủ.
+- Email khẩn khi app tự dừng làm ngay ở giai đoạn 0, không chờ giai đoạn 1.
 
 ## 2b. Đã chốt trong vòng hỏi cuối (28/10/2026)
 - Tiệm **chưa có giấy phép kinh doanh**. Inbox khách dùng **trình duyệt tự động** trên Meta Business Suite (phương án b). Không xin App Review.
@@ -116,7 +121,7 @@ Các quyết định dưới đây đều chỉnh được trong cài đặt, tr
 - Đăng nhập trên máy chủ bằng Xvfb + noVNC.
 - Dùng HTTPS bằng Caddy hoặc Cloudflare Tunnel.
 - Hai project Google: một miễn phí, một trả phí.
-- Sao lưu hằng đêm lên Oracle Object Storage.
+- Sao lưu hằng đêm ra thư mục cấu hình được; đẩy lên Oracle Object Storage khi có máy chủ.
 - Giao diện là SPA (ví dụ React + Vite). Người code được chọn framework.
 - Mục tiêu độ chính xác phân loại: comment nhầm dưới 2%.
 - Worker trình duyệt tách được khỏi máy chủ chính, để có thể chạy ở máy nhà nếu IP Oracle bị chặn.

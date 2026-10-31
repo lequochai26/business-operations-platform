@@ -41,7 +41,7 @@
 
 ## Công nghệ
 - Kế thừa POC `fb-post-crawler-poc`: Node.js + TypeScript + Playwright.
-- NestJS, BullMQ + Redis, PostgreSQL, chạy trên **Oracle Cloud Free**.
+- NestJS, BullMQ + Redis, PostgreSQL, đóng gói Docker. Trước mắt chạy trên máy local; sau dời lên **Oracle Cloud Free** khi đăng ký được (ADR `0009-local-first-deployment`).
 - **Gemini miễn phí** cho phần chữ. **Gemini Nano Banana 2.1 trả phí** cho chỉnh ảnh, khoảng 6 USD/tháng. Dự phòng: tự chỉnh ảnh rồi tải lên.
 - **Group:** dùng trình duyệt tự động, có rủi ro bị khóa tài khoản. Thử bằng tài khoản phụ trước.
 - Hiện có 6 group, khoảng 50–100 bài mới mỗi ngày. Mỗi chu kỳ quét mất khoảng 6–8 phút.
@@ -50,7 +50,8 @@
 - **Thông báo:** chủ tiệm dùng iPhone nên thông báo khẩn được gửi thêm qua email. Thợ dùng Android.
 
 ## Thứ tự làm
-0. Nền móng trên Oracle, kiểm chứng phiên đăng nhập chạy 24/7.
+0. Nền móng chạy Docker trên máy local, kiểm chứng phiên đăng nhập và việc quét.
+   - Triển khai lên Oracle: khi đăng ký được, chậm nhất trước khi bật web push ở giai đoạn 1.
 1. Tự comment bài loại 1.
 2. Lịch + kênh thợ, bật loại 2 và 3.
 3. Inbox Page.
@@ -62,5 +63,5 @@
 - Có để app nói mình là trợ lý tự động khi khách hỏi không.
 - Có chấp nhận gửi tin nhắn khách qua Gemini miễn phí không.
 - Tài khoản nào chạy worker inbox (dùng chung hay tách riêng).
-- Dùng tên miền miễn phí (DuckDNS) hay mua tên miền riêng.
+- Dùng tên miền miễn phí (DuckDNS) hay mua tên miền riêng. Tạm hoãn tới khi triển khai lên máy chủ.
 - Danh sách quyết định người viết tự đưa ra: `06-open-issues-and-assumptions.md`.
