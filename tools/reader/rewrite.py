@@ -17,6 +17,7 @@ class Block:
     key: str
     src_hash: str
     body: str
+    line: int = 0  # dòng của marker trong file bản viết lại (0 nếu khối được tạo trong bộ nhớ)
 
     @property
     def is_todo(self) -> bool:
@@ -27,13 +28,15 @@ def parse_rewrite(text: str, path: Path) -> list[Block]:
     blocks: list[Block] = []
     body: list[str] = []
     for lineno, line in enumerate(clean(text).split("\n"), start=1):
+        if line.lstrip().startswith(MARKER_PREFIX) and not line.startswith(MARKER_PREFIX):
+            raise ValueError(f"{path}, dòng {lineno}: marker bị thụt lề, marker phải nằm ở đầu dòng")
         if line.startswith(MARKER_PREFIX):
             match = MARKER.match(line)
             if not match:
                 raise ValueError(f"{path}, dòng {lineno}: marker sai cú pháp: {line}")
             if blocks:
                 blocks[-1].body = "\n".join(body).strip("\n")
-            blocks.append(Block(match.group(1), match.group(2), ""))
+            blocks.append(Block(match.group(1), match.group(2), "", lineno))
             body = []
         elif not blocks:
             if line.strip():

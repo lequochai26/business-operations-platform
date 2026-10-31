@@ -69,3 +69,19 @@ def test_html_index_lists_pages(tmp_path):
     assert 'href="phases/phase-0/test/cases/auth.html"' in index
     assert not (docs / "reader/html/_rewrite").exists()
     assert len(written) == 2
+
+
+def test_html_tooltip_for_gloss_with_special_chars(tmp_path):
+    docs, reader = make_reader(tmp_path)
+    reader.write_text(r'Xem [R-AUT-25](x.md#s-a "Vai trò <manager|technician>") *(Vai trò \<manager\|technician\>)*.' + "\n", encoding="utf-8")
+    render_site(docs, set())
+    html = page_html(docs)
+    assert 'title="Vai trò &lt;manager|technician&gt;"' in html
+    assert "<em>" not in html
+
+
+def test_html_tooltip_for_gloss_with_double_quotes(tmp_path):
+    docs, reader = make_reader(tmp_path)
+    reader.write_text('Xem [R-AUT-32](x.md#s-a "Bấm \'Đăng xuất\'") *(Bấm "Đăng xuất")*.\n', encoding="utf-8")
+    render_site(docs, set())
+    assert "<em>" not in page_html(docs)

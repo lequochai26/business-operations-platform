@@ -60,7 +60,7 @@ def test_check_reports_missing_number_and_string():
     sections, blocks = blocks_for(SOURCE, broken)
     report = check(Path("design/auth.md"), SOURCE, sections, blocks)
     assert report[0] == "design/auth.md – bản đọc thiếu 3 mục so với bản gốc:"
-    assert '- con số "128" (mục Màn hình và quy tắc kiểm tra dữ liệu)' in report
+    assert '- con số "128 ký tự" (mục Màn hình và quy tắc kiểm tra dữ liệu)' in report
     assert '- chuỗi "Mật khẩu tối đa 128 ký tự" (mục Màn hình và quy tắc kiểm tra dữ liệu)' in report
     assert '- chuỗi "Nhập sai mật khẩu quá nhiều lần. Thử lại sau <n> phút." (mục Màn hình và quy tắc kiểm tra dữ liệu)' in report
 
@@ -76,3 +76,17 @@ def test_check_ignores_abbreviation_definition_lines():
     rewrite = "### Ghi chú chạy\n\nGọi `<api>/sessions` 2 lần.\n"
     sections, blocks = blocks_for(source, rewrite)
     assert check(Path("t.md"), source, sections, blocks) == []
+
+
+def test_check_reports_changed_fenced_code():
+    source = "## Lệnh\n\n```sql\nSELECT * FROM users;\n```\n"
+    rewrite = "### Lệnh\n\n```sql\nDROP TABLE users;\n```\n"
+    sections, blocks = blocks_for(source, rewrite)
+    report = check(Path("t.md"), source, sections, blocks)
+    assert any("SELECT * FROM users;" in line for line in report)
+
+
+def test_check_reports_changed_unit():
+    source = "## Khóa\n\nKhóa 15 phút.\n"
+    sections, blocks = blocks_for(source, "### Khóa\n\nKhóa 15 giây.\n")
+    assert '- con số "15 phút" (mục Khóa)' in check(Path("t.md"), source, sections, blocks)

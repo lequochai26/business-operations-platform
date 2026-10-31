@@ -2,7 +2,7 @@
 
 import os
 import re
-from html import escape
+from html import escape, unescape
 from pathlib import Path
 
 import markdown
@@ -11,7 +11,20 @@ from reader.paths import HTML_DIR, READER_DIR, REWRITE_DIR, html_path
 from reader.text import read_text
 
 STALE_BANNER = '<div class="stale">Bản đọc này đã cũ so với bản gốc. Chạy /reader-view để sinh lại.</div>'
-INLINE_GLOSS = re.compile(r'(<a [^>]*title="([^"]*)"[^>]*>.*?</a>) <em>\(\2\)</em>')
+INLINE_GLOSS = re.compile(r'(<a [^>]*title="([^"]*)"[^>]*>.*?</a>) <em>\((.*?)\)</em>')
+TAG = re.compile(r"<[^>]+>")
+
+
+def _plain(fragment: str) -> str:
+    text = unescape(TAG.sub("", fragment)).replace("\\", "")
+    # Title dùng ' thay cho " (expand._title_escape); Markdown có thể đổi " thành dấu nháy cong.
+    text = re.sub(r"[\"'“”‘’]", "'", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _drop_inline_gloss(match: re.Match) -> str:
+    """Bỏ phần (ý nghĩa) đứng ngay sau link có title cùng nội dung: tooltip đã hiện ý nghĩa."""
+    return match.group(1) if _plain(match.group(2)) == _plain(match.group(3)) else match.group(0)
 MD_HREF = re.compile(r'href="([^"#]*?)\.md(#[^"]*)?"')
 STYLE = """
 body { font-family: var(--font-family-body, sans-serif); color: var(--color-text-default, #2B2B2B);
@@ -66,7 +79,7 @@ def render_site(docs_root: Path, stale_readers: set[Path]) -> list[Path]:
     for md_path in pages:
         text = read_text(md_path)
         content = markdown.markdown(_widen_list_indent(text), extensions=["tables", "fenced_code"])
-        content = INLINE_GLOSS.sub(r"\1", content)
+        content = INLINE_GLOSS.sub(_drop_inline_gloss, content)
         content = MD_HREF.sub(lambda m: f'href="{m.group(1)}.html{m.group(2) or ""}"', content)
         if md_path in stale_readers:
             content = STALE_BANNER + "\n" + content

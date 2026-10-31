@@ -69,6 +69,8 @@ def expand_range(id: str) -> list[str]:
 
 
 def short_gloss(text: str) -> str:
+    # Ý nghĩa là chữ thường: bỏ dấu backtick để không cắt ngang một đoạn code.
+    text = text.replace("`", "")
     previous = None
     while previous != text:
         previous, text = text, re.sub(r"\([^()]*\)", "", text)
@@ -82,7 +84,7 @@ def short_gloss(text: str) -> str:
 
 
 def _title(text: str) -> str:
-    text = text.strip()
+    text = text.replace("`", "").strip()
     return text if len(text) <= GLOSS_MAX else text[: GLOSS_MAX - 1].rstrip() + "…"
 
 

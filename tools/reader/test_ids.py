@@ -115,3 +115,9 @@ def test_duplicate_definition_warns(tmp_path):
     docs = make_docs(tmp_path, {"phases/phase-0/design/other.md": "## Quy tắc\n\n- R-AUT-06: Bản trùng\n"})
     index = build(docs)
     assert any("R-AUT-06" in w for w in index.warnings)
+
+
+def test_short_gloss_is_plain_text_without_backticks():
+    gloss = short_gloss("Đọc cài đặt qua `SettingsService.get(key)` có cache 30 giây")
+    assert "`" not in gloss
+    assert gloss == "Đọc cài đặt qua SettingsService"

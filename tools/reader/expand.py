@@ -12,6 +12,21 @@ from reader.rewrite import parse_rewrite
 from reader.sections import split_sections
 from reader.text import read_text, short_hash
 
+MD_SPECIAL = re.compile(r"([\\`*_\[\]<>|])")
+
+
+def _md_escape(text: str) -> str:
+    return MD_SPECIAL.sub(r"\\\1", text)
+
+
+def _title_escape(text: str) -> str:
+    return text.replace('"', "'").replace("|", "\\|")
+
+
+def _is_definition_line(line: str, id: str) -> bool:
+    return re.match(rf"^\s*(?:[-*+]\s+|\d+\.\s+)?(?:\*\*)?{re.escape(id)}(?![\w-])", line) is not None
+
+
 HEADER_RE = re.compile(r"^> Bản đọc sinh từ (\S+) \(phiên bản ([0-9a-f]{7}), [^)]*\)\. Không sửa tay\.$")
 
 
@@ -48,12 +63,12 @@ def render_reader(docs_root: Path, src: Path, blocks: list, index: Index, now: d
     own_reader_dir = reader_path(docs_root, src).parent
     warnings: list[str] = []
 
-    def render_id(id: str, text: str, block_key: str, seen: set[str]) -> str:
+    def render_id(id: str, text: str, line: str, seen: set[str]) -> str:
         definition = index.resolve(id, src)
         if definition is None:
             warnings.append(f"{src_rel}: không tìm thấy định nghĩa của {id}")
             return text
-        if definition.source == src and definition.section_key == block_key:
+        if definition.source == src and _is_definition_line(line, id):
             return text
         target = reader_path(docs_root, definition.source)
         link = "" if target == reader_path(docs_root, src) else os.path.relpath(target, own_reader_dir).replace("\\", "/")
@@ -62,8 +77,7 @@ def render_reader(docs_root: Path, src: Path, blocks: list, index: Index, now: d
         if id in seen:
             return f"[{text}]({link})"
         seen.add(id)
-        gloss = definition.gloss.replace('"', "'")
-        return f'[{text}]({link} "{gloss}") *({gloss})*'
+        return f'[{text}]({link} "{_title_escape(definition.gloss)}") *({_md_escape(definition.gloss)})*'
 
     def render_line(line: str, block_key: str) -> str:
         if line.lstrip().startswith("#"):
@@ -79,9 +93,9 @@ def render_reader(docs_root: Path, src: Path, blocks: list, index: Index, now: d
             rendered.append(line[position : ref.start])
             original = line[ref.start : ref.end]
             if ".." in ref.id:
-                rendered.append(", ".join(render_id(id, id, block_key, seen) for id in expand_range(ref.id)))
+                rendered.append(", ".join(render_id(id, id, line, seen) for id in expand_range(ref.id)))
             else:
-                rendered.append(render_id(ref.id, original, block_key, seen))
+                rendered.append(render_id(ref.id, original, line, seen))
             position = ref.end
         rendered.append(line[position:])
         return "".join(rendered)

@@ -39,8 +39,25 @@ def _problems(docs_root: Path, src: Path, sections: list[Section], blocks: list[
     todo = sum(1 for b in blocks if b.is_todo)
     if todo:
         return [f"{rel}: còn {todo} mục chưa viết lại"]
-    current = {s.key: s.hash for s in sections}
-    if {b.key: b.src_hash for b in blocks} != current:
+    problems: list[str] = []
+    seen: dict[str, int] = {}
+    for block in blocks:
+        if block.key in seen:
+            problems.append(f"{rel}: marker trùng {block.key} (dòng {seen[block.key]} và dòng {block.line})")
+        seen.setdefault(block.key, block.line)
+    by_key = {s.key: s for s in sections}
+    for section in sections:
+        if section.key not in seen:
+            problems.append(
+                f"{rel}: thiếu marker của mục {section.heading or 'đầu tài liệu'}"
+                " (mục mới thêm vào bản gốc thì chạy todo; lỡ xóa marker thì khôi phục dòng marker)"
+            )
+    for block in blocks:
+        if block.key not in by_key:
+            problems.append(f"{rel}: marker thừa {block.key} (dòng {block.line}); mục đã bị xóa khỏi bản gốc thì chạy todo")
+    if problems:
+        return problems
+    if any(by_key[b.key].hash != b.src_hash for b in blocks):
         return [f"{rel}: bản gốc đã đổi sau lần chạy todo, chạy lại todo"]
     return []
 
@@ -81,6 +98,8 @@ def cmd_build(docs_root: Path, targets: list[str], now: datetime) -> int:
         text, render_warnings = render_reader(docs_root, src, blocks, index, now)
         warnings += render_warnings
         out = reader_path(docs_root, src)
+        if out.exists() and read_text(out).split("\n", 1)[1:] == text.split("\n", 1)[1:]:
+            continue  # chỉ khác dòng đầu (thời điểm sinh): giữ nguyên file để không đổi file đã commit
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(text, encoding="utf-8")
 

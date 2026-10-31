@@ -100,3 +100,43 @@ def test_stale_after_source_change(tmp_path, capsys):
     (docs / "phases/phase-0/design/auth.md").write_text(DESIGN + "\nThêm.\n", encoding="utf-8")
     run(docs, "stale")
     assert "docs/phases/phase-0/design/auth.md: bản gốc đã đổi" in capsys.readouterr().out
+
+
+def _rewrite_file(docs):
+    return rewrite_path(docs, docs / "phases/phase-0/design/auth.md")
+
+
+def test_build_reports_missing_marker(tmp_path, capsys):
+    docs = make_docs(tmp_path)
+    run(docs, "todo", "all")
+    fill_todos(docs)
+    path = _rewrite_file(docs)
+    lines = path.read_text(encoding="utf-8").split("\n")
+    path.write_text("\n".join(l for i, l in enumerate(lines) if not (l.startswith("<!-- src-section:") and i > 0)), encoding="utf-8")
+    assert run(docs, "build", "all") == 1
+    out = capsys.readouterr().out
+    assert "thiếu marker của mục Quy tắc" in out and "chạy lại todo" not in out
+
+
+def test_build_reports_duplicated_marker(tmp_path, capsys):
+    docs = make_docs(tmp_path)
+    run(docs, "todo", "all")
+    fill_todos(docs)
+    path = _rewrite_file(docs)
+    text = path.read_text(encoding="utf-8")
+    first_marker = text.split("\n", 1)[0]
+    path.write_text(text + "\n" + first_marker + "\nnội dung bịa\n", encoding="utf-8")
+    assert run(docs, "build", "all") == 1
+    out = capsys.readouterr().out
+    assert "marker trùng" in out and "dòng" in out
+
+
+def test_build_twice_keeps_unchanged_reader_untouched(tmp_path):
+    docs = make_docs(tmp_path)
+    run(docs, "todo", "all")
+    fill_todos(docs)
+    run(docs, "build", "all")
+    reader = reader_path(docs, docs / "phases/phase-0/design/auth.md")
+    before = reader.read_text(encoding="utf-8")
+    main(["build", "all"], docs, datetime(2026, 11, 2, 9, 0))
+    assert reader.read_text(encoding="utf-8") == before

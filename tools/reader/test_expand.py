@@ -128,3 +128,26 @@ def test_stale_reports_three_reasons(tmp_path):
     rewrite.parent.mkdir(parents=True)
     rewrite.write_text(format_rewrite([Block("abcdef0123", "0123456789ab", f"{TODO_MARK}\nx")]), encoding="utf-8")
     assert stale_reports(docs, [cases]) == ["docs/phases/phase-0/test/cases/auth.md: còn mục chưa viết lại"]
+
+
+def test_render_escapes_markdown_special_chars_in_gloss(tmp_path):
+    docs = make_docs(tmp_path)
+    (docs / "phases/phase-0/design/auth.md").write_text(DESIGN + "\n## Lệnh\n\n- R-AUT-25: Vai trò <manager|technician> *tùy*.\n", encoding="utf-8")
+    src = docs / "phases/phase-0/test/cases/auth.md"
+    index = Index.build(docs, sorted(docs.rglob("*.md")))
+    section = split_sections(read_text(src))[-1]
+    text, _ = render_reader(docs, src, [Block(section.key, section.hash, "| R-AUT-25 | ok |")], index, NOW)
+    row = [line for line in text.split("\n") if line.startswith("| ")][0]
+    assert row.replace("\|", "").count("|") == 3
+    assert "\<manager\|technician\>" in row and "\*tùy\*" in row
+
+
+def test_render_glosses_other_rule_in_same_section(tmp_path):
+    docs = make_docs(tmp_path)
+    src = docs / "phases/phase-0/design/auth.md"
+    index = Index.build(docs, sorted(docs.rglob("*.md")))
+    section = [s for s in split_sections(read_text(src)) if s.heading == "Quy tắc"][0]
+    body = "- R-AUT-02: dài quá, xem R-AUT-01."
+    text, _ = render_reader(docs, src, [Block(section.key, section.hash, body)], index, NOW)
+    assert "*(Tên đăng nhập trống)*" in text
+    assert "R-AUT-02 *(" not in text and "[R-AUT-02]" not in text

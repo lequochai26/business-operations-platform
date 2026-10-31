@@ -53,3 +53,10 @@ def test_parse_rewrite_rejects_malformed_marker():
     with pytest.raises(ValueError) as exc:
         parse_rewrite(text, Path("auth.md"))
     assert "auth.md" in str(exc.value) and "dòng 5" in str(exc.value)
+
+
+def test_parse_rewrite_rejects_indented_marker():
+    text = "<!-- src-section: abcdef0123 0123456789ab -->\nx\n  <!-- src-section: bcdef01234 0123456789ab -->\ny\n"
+    with pytest.raises(ValueError) as exc:
+        parse_rewrite(text, Path("auth.md"))
+    assert "dòng 3" in str(exc.value)
