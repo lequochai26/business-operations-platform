@@ -1,0 +1,14 @@
+# This file instructs Redocly's linter to ignore the rules contained for specific parts of your API.
+# See https://redocly.com/docs/cli/ for more information.
+# /api/v1/health: không có response 4xx vì endpoint không nhận tham số và không cần đăng nhập (docs/design/api/system.md).
+# components/responses: mã lỗi dùng chung (system.md, R-SKL-15) khai báo trước cho endpoint của các tính năng sau
+# (ví dụ /api/v1/settings/<khóa> của crawl-settings; Forbidden cho route chỉ Quản lý); bỏ dòng tương ứng khi đã có endpoint dùng.
+docs/design/api/openapi.yaml:
+  operation-4xx-response:
+    - '#/paths/~1api~1v1~1health/get/responses'
+  no-unused-components:
+    - '#/components/responses/InvalidJson'
+    - '#/components/responses/ValidationError'
+    - '#/components/responses/NotFound'
+    - '#/components/responses/InvalidStoredSetting'
+    - '#/components/responses/Forbidden'

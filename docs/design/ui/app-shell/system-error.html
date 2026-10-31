@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <!-- Mockup Khung app – trạng thái lỗi nạp phiên. Khung chuẩn 1440×900. Sinh bởi /ui-design auth. -->
+  <title>Khung app – lỗi nạp phiên</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../ui-tokens.css">
+  <link rel="stylesheet" href="../mockup-base.css">
+  
+  <style>
+    .boot { min-height: 900px; display: flex; align-items: center; justify-content: center; }
+    .boot-box { display: flex; flex-direction: column; align-items: center; gap: var(--space-md); text-align: center; }
+    .boot-logo { font-family: var(--font-family-decorative); font-size: var(--font-size-logo); font-weight: var(--font-weight-semibold); color: var(--color-brand-primary-strong); line-height: 1; }
+    .boot-status { display: flex; align-items: center; gap: var(--space-sm); color: var(--color-text-muted); font-size: var(--font-size-sm); }
+    .boot .card { width: calc(var(--space-xxxl) * 9); padding: var(--space-xxl); display: flex; flex-direction: column; align-items: center; gap: var(--space-lg); }
+  </style>
+</head>
+<body>
+  <div class="boot">
+    <div class="boot-box">
+      <div class="boot-logo">Mio</div>
+      <div class="card" role="alert">
+        <p>Lỗi hệ thống, vui lòng thử lại sau</p>
+        <button class="btn btn-primary">Thử lại</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,460 @@
+# File sinh tự động từ docs/design/api/*.md, không sửa tay.
+openapi: 3.1.0
+info:
+  title: Tiệm Nhà Mio – Business Operations Platform API
+  version: 0.1.0
+  description: |
+    API nội bộ của Tiệm Nhà Mio.
+    Xác thực bằng phiên đăng nhập (cookie `mio_session`); thiếu phiên trả 401 `UNAUTHENTICATED`, trừ endpoint được ghi là công khai.
+    Mọi lỗi trả thân theo schema `Error`.
+    Mọi response có header `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: same-origin`.
+  license:
+    name: Proprietary
+    identifier: LicenseRef-Proprietary
+servers:
+  - url: /
+tags:
+  - name: system
+    description: Kiểm tra hệ thống
+  - name: sessions
+    description: Đăng nhập, phiên hiện tại, đăng xuất
+  - name: users
+    description: Tài khoản người dùng
+paths:
+  /api/v1/health:
+    get:
+      operationId: getHealth
+      summary: Kiểm tra API, DB, Redis
+      description: Kiểm tra API còn chạy và kết nối được DB, Redis. Dùng cho healthcheck của Docker và theo dõi vận hành.
+      tags:
+        - system
+      security: []
+      responses:
+        '200':
+          description: DB và Redis đều hoạt động
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+              example:
+                status: ok
+                checks:
+                  database: up
+                  redis: up
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '503':
+          description: DB hoặc Redis không trả lời trong 2 giây
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+              example:
+                status: error
+                checks:
+                  database: down
+                  redis: up
+  /api/v1/sessions:
+    post:
+      operationId: createSession
+      summary: Đăng nhập
+      description: Đăng nhập bằng tên đăng nhập và mật khẩu, tạo phiên mới và đặt cookie. Mọi response có `Cache-Control` `no-store`.
+      tags:
+        - sessions
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              username: chutiem
+              password: mat-khau-cua-ban
+      responses:
+        '201':
+          description: Đăng nhập thành công, cookie phiên được đặt; request mang cookie của một phiên còn hiệu lực thì phiên đó bị xóa (R-AUT-08)
+          headers:
+            Set-Cookie:
+              $ref: '#/components/headers/SetSessionCookie'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+              example:
+                user:
+                  id: 3f1c2a9e-7b4d-4c1e-9a55-0d2b8f6e1a77
+                  username: chutiem
+                  displayName: Chủ tiệm
+                  role: manager
+        '400':
+          description: Dữ liệu đăng nhập sai quy tắc (VALIDATION_ERROR) hoặc thân không phải JSON (INVALID_JSON)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                validationError:
+                  value:
+                    code: VALIDATION_ERROR
+                    message: Dữ liệu đăng nhập không hợp lệ
+                    fields:
+                      username: Nhập tên đăng nhập
+                      password: Nhập mật khẩu
+                invalidJson:
+                  value:
+                    code: INVALID_JSON
+                    message: Dữ liệu gửi lên không đúng định dạng JSON
+        '401':
+          description: Tên đăng nhập không tồn tại hoặc mật khẩu sai (INVALID_CREDENTIALS)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_CREDENTIALS
+                message: Tên đăng nhập hoặc mật khẩu không đúng
+        '403':
+          $ref: '#/components/responses/InvalidOrigin'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
+        '429':
+          $ref: '#/components/responses/LoginLocked'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/sessions/current:
+    get:
+      operationId: getCurrentSession
+      summary: Người dùng của phiên hiện tại
+      description: Lấy người dùng của phiên hiện tại. Web gọi khi mở app để biết đã đăng nhập chưa và vai trò là gì. Có thể kèm `Set-Cookie` khi phiên được gia hạn. Mọi response có `Cache-Control` `no-store`.
+      tags:
+        - sessions
+      responses:
+        '200':
+          description: Phiên còn hiệu lực
+          headers:
+            Set-Cookie:
+              $ref: '#/components/headers/SetSessionCookie'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+              example:
+                user:
+                  id: 3f1c2a9e-7b4d-4c1e-9a55-0d2b8f6e1a77
+                  username: chutiem
+                  displayName: Chủ tiệm
+                  role: manager
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteCurrentSession
+      summary: Đăng xuất
+      description: Xóa phiên hiện tại và xóa cookie. Idempotent, trả 204 cả khi không có phiên. Mọi response có `Cache-Control` `no-store`.
+      tags:
+        - sessions
+      security: []
+      responses:
+        '204':
+          description: Đã đăng xuất, cookie bị xóa
+          headers:
+            Set-Cookie:
+              $ref: '#/components/headers/ClearSessionCookie'
+        '403':
+          $ref: '#/components/responses/InvalidOrigin'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/users/me/change-password:
+    post:
+      operationId: changeMyPassword
+      summary: Đổi mật khẩu của chính mình
+      description: Người dùng đang đăng nhập đổi mật khẩu của chính mình. Thiết bị hiện tại nhận phiên mới; phiên của các thiết bị khác bị xóa nếu `signOutOtherDevices` là `true`, giữ nguyên nếu `false`. Mọi response có `Cache-Control` `no-store`.
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+            example:
+              currentPassword: mat-khau-cu
+              newPassword: mat-khau-moi-dai-hon
+              signOutOtherDevices: true
+      responses:
+        '204':
+          description: Đã đổi mật khẩu, cookie phiên mới được đặt
+          headers:
+            Set-Cookie:
+              $ref: '#/components/headers/SetSessionCookie'
+        '400':
+          description: Dữ liệu đổi mật khẩu sai quy tắc hoặc mật khẩu hiện tại không đúng (VALIDATION_ERROR), hoặc thân không phải JSON (INVALID_JSON)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                currentPasswordIncorrect:
+                  value:
+                    code: VALIDATION_ERROR
+                    message: Dữ liệu đổi mật khẩu không hợp lệ
+                    fields:
+                      currentPassword: Mật khẩu hiện tại không đúng
+                newPasswordInvalid:
+                  value:
+                    code: VALIDATION_ERROR
+                    message: Dữ liệu đổi mật khẩu không hợp lệ
+                    fields:
+                      newPassword: Mật khẩu mới phải từ 8 đến 128 ký tự
+                invalidJson:
+                  value:
+                    code: INVALID_JSON
+                    message: Dữ liệu gửi lên không đúng định dạng JSON
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/InvalidOrigin'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
+        '429':
+          $ref: '#/components/responses/LoginLocked'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: mio_session
+      description: Phiên đăng nhập (ADR 0015). Cookie HttpOnly, SameSite=Lax, Path=/, Secure khi PUBLIC_URL là https.
+  headers:
+    SetSessionCookie:
+      description: 'Đặt hoặc gia hạn cookie phiên: mio_session=<token>; HttpOnly; SameSite=Lax; Path=/; Max-Age=<giây tới hết hạn>, thêm Secure khi PUBLIC_URL là https'
+      schema:
+        type: string
+    ClearSessionCookie:
+      description: 'Xóa cookie phiên: mio_session=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0'
+      schema:
+        type: string
+    RetryAfter:
+      description: Số giây còn lại tới khi hết khóa, làm tròn lên
+      schema:
+        type: integer
+        minimum: 1
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Mã lỗi, UPPER_SNAKE_CASE
+        message:
+          type: string
+          description: Thông báo tiếng Việt
+        fields:
+          type: object
+          description: Thông báo lỗi theo từng trường, chỉ có khi lỗi gắn với trường cụ thể
+          additionalProperties:
+            type: string
+    CheckStatus:
+      type: string
+      enum:
+        - up
+        - down
+    Health:
+      type: object
+      required:
+        - status
+        - checks
+      properties:
+        status:
+          type: string
+          enum:
+            - ok
+            - error
+        checks:
+          type: object
+          required:
+            - database
+            - redis
+          properties:
+            database:
+              $ref: '#/components/schemas/CheckStatus'
+            redis:
+              $ref: '#/components/schemas/CheckStatus'
+    Role:
+      type: string
+      description: manager = Quản lý, technician = Thợ
+      enum:
+        - manager
+        - technician
+    SessionUser:
+      type: object
+      required:
+        - id
+        - username
+        - displayName
+        - role
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+          description: Tên đăng nhập đã chuẩn hóa chữ thường
+          pattern: '^[a-z0-9._-]{3,32}$'
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 50
+        role:
+          $ref: '#/components/schemas/Role'
+    SessionResponse:
+      type: object
+      required:
+        - user
+      properties:
+        user:
+          $ref: '#/components/schemas/SessionUser'
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: Được chuẩn hóa (bỏ khoảng trắng hai đầu, đổi chữ thường), tên đã chuẩn hóa dài 1–32 ký tự (R-AUT-01, R-AUT-02, R-AUT-07)
+        password:
+          type: string
+          description: Dài 1–128 ký tự, không bỏ khoảng trắng (R-AUT-03, R-AUT-04)
+          minLength: 1
+          maxLength: 128
+    ChangePasswordRequest:
+      type: object
+      required:
+        - currentPassword
+        - newPassword
+        - signOutOtherDevices
+      properties:
+        currentPassword:
+          type: string
+          description: Mật khẩu hiện tại (R-AUT-19, R-AUT-20)
+          minLength: 1
+          maxLength: 128
+        newPassword:
+          type: string
+          description: 8–128 ký tự, không trùng tên đăng nhập, khác mật khẩu hiện tại (R-AUT-21)
+          minLength: 8
+          maxLength: 128
+        signOutOtherDevices:
+          type: boolean
+          description: true đăng xuất mọi thiết bị khác, false giữ nguyên phiên của chúng (R-AUT-23, R-AUT-34)
+  responses:
+    InvalidJson:
+      description: Thân request không phải JSON hợp lệ (INVALID_JSON)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: INVALID_JSON
+            message: Dữ liệu gửi lên không đúng định dạng JSON
+    ValidationError:
+      description: Dữ liệu sai quy tắc (VALIDATION_ERROR); khóa của fields là đường dẫn trường, lỗi ở gốc dùng _root
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: VALIDATION_ERROR
+            message: Dữ liệu cài đặt không hợp lệ
+            fields:
+              maxScrolls: phải từ 1 đến 20
+    Unauthenticated:
+      description: Không có phiên, phiên không hợp lệ hoặc đã hết hạn (UNAUTHENTICATED); cookie không hợp lệ thì response kèm xóa cookie
+      headers:
+        Set-Cookie:
+          $ref: '#/components/headers/ClearSessionCookie'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: UNAUTHENTICATED
+            message: Bạn chưa đăng nhập hoặc phiên đăng nhập đã hết hạn
+    Forbidden:
+      description: Vai trò không được dùng route (FORBIDDEN)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: FORBIDDEN
+            message: Bạn không có quyền thực hiện thao tác này
+    InvalidOrigin:
+      description: Header Origin khác origin của PUBLIC_URL (INVALID_ORIGIN)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: INVALID_ORIGIN
+            message: 'Yêu cầu bị từ chối: hãy mở app bằng địa chỉ http://localhost:3000'
+    LoginLocked:
+      description: Nhập sai mật khẩu quá nhiều lần, tên đăng nhập đang bị khóa (LOGIN_LOCKED)
+      headers:
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: LOGIN_LOCKED
+            message: Nhập sai mật khẩu quá nhiều lần. Thử lại sau 15 phút.
+    NotFound:
+      description: Đường dẫn /api/... không có route (NOT_FOUND)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: NOT_FOUND
+            message: Không tìm thấy địa chỉ yêu cầu
+    InvalidStoredSetting:
+      description: Giá trị cài đặt đang lưu không qua schema hiện tại (INVALID_STORED_SETTING), chỉ ở endpoint /api/v1/settings/<khóa>
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: INVALID_STORED_SETTING
+            message: 'Cài đặt crawl-schedule đang lưu không hợp lệ: maxScrolls: phải từ 1 đến 20 (đang lưu: 25)'
+            fields:
+              maxScrolls: phải từ 1 đến 20
+    PayloadTooLarge:
+      description: Thân request lớn hơn 1 MB (PAYLOAD_TOO_LARGE)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: PAYLOAD_TOO_LARGE
+            message: Dữ liệu gửi lên quá lớn
+    InternalError:
+      description: Lỗi không lường trước (INTERNAL_ERROR)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: INTERNAL_ERROR
+            message: Lỗi hệ thống, vui lòng thử lại sau
+security:
+  - sessionCookie: []

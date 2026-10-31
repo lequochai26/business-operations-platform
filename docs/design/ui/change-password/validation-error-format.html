@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <!-- Mockup Đổi mật khẩu – trạng thái lỗi nhập liệu – độ dài, nhập lại. Khung chuẩn 1440×900. Sinh bởi /ui-design auth. -->
+  <title>Đổi mật khẩu – lỗi nhập liệu – độ dài, nhập lại</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../ui-tokens.css">
+  <link rel="stylesheet" href="../mockup-base.css">
+  <script src="../../components/app-nav.js"></script>
+  <script src="../../components/password-field.js"></script>
+  <style>
+    .cp-card { max-width: calc(var(--space-xxxl) * 10); }
+    .cp-card .form-actions { margin-top: var(--space-xs); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <mio-app-nav role="manager" active="/account/password" display-name="Huỳnh Mio"></mio-app-nav>
+    <main>
+      <div class="page-header">
+        <h1 class="page-title">Đổi mật khẩu</h1>
+      </div>
+      <div class="card cp-card">
+        <form class="form" novalidate>
+          <mio-password-field label="Mật khẩu hiện tại" name="currentPassword" autocomplete="current-password" value="hoa-cuc-tiem-nha-mio-hoa-cuc-tiem-nha-mio-hoa-cuc-tiem-nha-mio-hoa-cuc-tiem-nha-mio-hoa-cuc-tiem-nha-mio-hoa-cuc-tiem-nha-mio-hoa-cuc-tiem-nha-mio-" error="Mật khẩu tối đa 128 ký tự"></mio-password-field>
+          <mio-password-field label="Mật khẩu mới" name="newPassword" autocomplete="new-password" value="mio123" hint="Ít nhất 8 ký tự" error="Mật khẩu mới phải từ 8 đến 128 ký tự"></mio-password-field>
+          <mio-password-field label="Nhập lại mật khẩu mới" name="confirmPassword" autocomplete="new-password" value="mio1234" error="Mật khẩu nhập lại không khớp"></mio-password-field>
+          
+          <div class="form-actions"><button class="btn btn-primary" type="submit">Đổi mật khẩu</button></div>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

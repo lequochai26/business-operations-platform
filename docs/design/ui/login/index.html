@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <!-- Mockup Đăng nhập – trạng thái danh sách trạng thái. Khung chuẩn 1440×900. Sinh bởi /ui-design auth. -->
+  <title>Đăng nhập – danh sách trạng thái</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../ui-tokens.css">
+  <link rel="stylesheet" href="../mockup-base.css">
+  
+</head>
+<body>
+  <main style="padding: var(--space-xxl); max-width: var(--size-content-max);">
+    <h1 class="page-title">Đăng nhập</h1>
+    <p class="page-sub">Mockup tính năng <code>auth</code> · ghi chú: notes.md · ảnh chụp: screenshots/</p>
+    <ul class="card" style="margin-top: var(--space-xl); padding-left: calc(var(--space-xl) * 2); line-height: 2;">
+      <li><a href="normal.html">normal.html</a> – form trống, lần đầu mở /login</li>
+      <li><a href="loading.html">loading.html</a> – bấm Đăng nhập, nút &quot;Đang đăng nhập…&quot; không bấm được</li>
+      <li><a href="validation-error.html">validation-error.html</a> – R-AUT-01, R-AUT-03: bấm Đăng nhập khi để trống cả hai ô</li>
+      <li><a href="validation-error-length.html">validation-error-length.html</a> – R-AUT-02, R-AUT-04: tên 33 ký tự, mật khẩu 147 ký tự</li>
+      <li><a href="invalid-credentials.html">invalid-credentials.html</a> – R-AUT-05: banner danger, giữ tên đăng nhập, xóa ô mật khẩu</li>
+      <li><a href="locked.html">locked.html</a> – R-AUT-06: sai 5 lần trong 15 phút, banner danger với số phút còn lại</li>
+      <li><a href="system-error.html">system-error.html</a> – INTERNAL_ERROR (500): banner danger, giữ tên đăng nhập, xóa ô mật khẩu</li>
+      <li><a href="network-error.html">network-error.html</a> – Không gửi được request: banner danger, giữ dữ liệu trên form</li>
+      <li><a href="invalid-origin.html">invalid-origin.html</a> – R-AUT-17 INVALID_ORIGIN: mở app bằng địa chỉ khác PUBLIC_URL (ví dụ 127.0.0.1 thay vì localhost)</li>
+      <li><a href="cookie-blocked.html">cookie-blocked.html</a> – Đăng nhập trả 201 nhưng GET /sessions/current trả 401</li>
+      <li><a href="session-expired.html">session-expired.html</a> – R-AUT-31: bị chuyển về /login?next=… khi API trả 401, banner info</li>
+      <li><a href="signed-out.html">signed-out.html</a> – R-AUT-32: sau khi bấm Đăng xuất, banner info</li>
+    </ul>
+  </main>
+</body>
+</html>

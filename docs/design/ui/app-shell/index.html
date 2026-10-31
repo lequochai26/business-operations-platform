@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <!-- Mockup Khung app – Trang chính – trạng thái danh sách trạng thái. Khung chuẩn 1440×900. Sinh bởi /ui-design auth. -->
+  <title>Khung app – Trang chính – danh sách trạng thái</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../ui-tokens.css">
+  <link rel="stylesheet" href="../mockup-base.css">
+  
+</head>
+<body>
+  <main style="padding: var(--space-xxl); max-width: var(--size-content-max);">
+    <h1 class="page-title">Khung app – Trang chính</h1>
+    <p class="page-sub">Mockup tính năng <code>auth</code> · ghi chú: notes.md · ảnh chụp: screenshots/</p>
+    <ul class="card" style="margin-top: var(--space-xl); padding-left: calc(var(--space-xl) * 2); line-height: 2;">
+      <li><a href="normal.html">normal.html</a> – Quản lý ở Trang chính: thấy Trang chính, Cài đặt, Nhật ký hệ thống; trang giữ chỗ tiêu đề &quot;Hôm nay&quot;</li>
+      <li><a href="normal-technician.html">normal-technician.html</a> – Thợ ở Trang chính: chỉ thấy Trang chính (R-AUT-29)</li>
+      <li><a href="loading.html">loading.html</a> – Mở app, đang gọi GET /api/v1/sessions/current: chưa biết vai trò nên chưa vẽ thanh điều hướng</li>
+      <li><a href="system-error.html">system-error.html</a> – GET /api/v1/sessions/current trả 500 hoặc mất mạng: thông báo + nút Thử lại</li>
+      <li><a href="forbidden.html">forbidden.html</a> – R-AUT-29: đang thao tác mà API trả 403 FORBIDDEN → toast danger với message của API</li>
+    </ul>
+  </main>
+</body>
+</html>

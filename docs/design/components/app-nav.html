@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>AppNav – gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../ui-tokens.css">
+  <script src="app-nav.js"></script>
+  <style>
+    body { margin: 0; padding: var(--space-xl); background: var(--color-surface-page); font-family: var(--font-family-body); color: var(--color-text-default); }
+    h1 { font-size: var(--font-size-xl); margin: 0 0 var(--space-lg); }
+    .grid { display: grid; grid-template-columns: repeat(4, var(--size-nav-width)); gap: var(--space-xl); }
+    .label { font-size: var(--font-size-sm); color: var(--color-text-muted); margin-bottom: var(--space-sm); min-height: calc(var(--font-size-sm) * 4.5); }
+    mio-app-nav { position: static; height: calc(var(--space-xxxl) * 13); min-height: 0; border-radius: var(--radius-md); overflow: hidden; }
+  </style>
+</head>
+<body>
+  <h1>AppNav</h1>
+  <div class="grid">
+    <div>
+      <div class="label">role=manager, active=/ (Trang chính đang chọn)</div>
+      <mio-app-nav role="manager" active="/" display-name="Huỳnh Mio"></mio-app-nav>
+    </div>
+    <div>
+      <div class="label">role=manager, active=/settings · hover Nhật ký hệ thống · focus Đăng xuất</div>
+      <mio-app-nav role="manager" active="/settings" display-name="Huỳnh Mio" hover="/system-log" focus="logout"></mio-app-nav>
+    </div>
+    <div>
+      <div class="label">role=technician, active=/ (không có Cài đặt, Nhật ký hệ thống)</div>
+      <mio-app-nav role="technician" active="/" display-name="Ngọc Anh"></mio-app-nav>
+    </div>
+    <div>
+      <div class="label">role=manager, active=/account/password · tên hiển thị dài (50 ký tự)</div>
+      <mio-app-nav role="manager" active="/account/password" display-name="Nguyễn Thị Huỳnh Mio – chủ tiệm chi nhánh Quận 11"></mio-app-nav>
+    </div>
+  </div>
+</body>
+</html>

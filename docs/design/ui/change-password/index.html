@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <!-- Mockup Đổi mật khẩu – trạng thái danh sách trạng thái. Khung chuẩn 1440×900. Sinh bởi /ui-design auth. -->
+  <title>Đổi mật khẩu – danh sách trạng thái</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../ui-tokens.css">
+  <link rel="stylesheet" href="../mockup-base.css">
+  
+</head>
+<body>
+  <main style="padding: var(--space-xxl); max-width: var(--size-content-max);">
+    <h1 class="page-title">Đổi mật khẩu</h1>
+    <p class="page-sub">Mockup tính năng <code>auth</code> · ghi chú: notes.md · ảnh chụp: screenshots/</p>
+    <ul class="card" style="margin-top: var(--space-xl); padding-left: calc(var(--space-xl) * 2); line-height: 2;">
+      <li><a href="normal.html">normal.html</a> – form trống, gợi ý &quot;Ít nhất 8 ký tự&quot; dưới Mật khẩu mới</li>
+      <li><a href="confirm-dialog.html">confirm-dialog.html</a> – R-AUT-34: form hợp lệ, bấm Đổi mật khẩu → hộp thoại, nút đăng xuất thiết bị khác được focus sẵn</li>
+      <li><a href="loading.html">loading.html</a> – Bấm &quot;Đổi và đăng xuất thiết bị khác&quot;: nút đó &quot;Đang lưu…&quot;, hai nút còn lại không bấm được, không đóng được hộp thoại</li>
+      <li><a href="success.html">success.html</a> – R-AUT-23: đóng hộp thoại, xóa trắng form, toast success</li>
+      <li><a href="validation-error.html">validation-error.html</a> – R-AUT-19, R-AUT-21, R-AUT-22: bấm Đổi mật khẩu khi để trống cả ba ô</li>
+      <li><a href="validation-error-format.html">validation-error-format.html</a> – R-AUT-19 (quá 128 ký tự), R-AUT-21 (dưới 8 ký tự), R-AUT-22 (không khớp)</li>
+      <li><a href="validation-error-username.html">validation-error-username.html</a> – R-AUT-21: Thợ ngocanh.nail đặt mật khẩu mới NgocAnh.Nail (so không phân biệt hoa thường); ô đang hiện ký tự</li>
+      <li><a href="validation-error-current.html">validation-error-current.html</a> – R-AUT-20: API trả lỗi theo trường; hộp thoại đã đóng, giữ dữ liệu trên form</li>
+      <li><a href="validation-error-same.html">validation-error-same.html</a> – R-AUT-21: API kiểm sau khi mật khẩu hiện tại đúng</li>
+      <li><a href="locked.html">locked.html</a> – R-AUT-20, R-AUT-06: sai mật khẩu hiện tại lần thứ 5 → banner danger, giữ dữ liệu</li>
+      <li><a href="system-error.html">system-error.html</a> – INTERNAL_ERROR (500): banner danger, giữ dữ liệu trên form</li>
+    </ul>
+  </main>
+</body>
+</html>
